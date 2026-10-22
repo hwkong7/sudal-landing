@@ -69,10 +69,6 @@ a{color:var(--river-deep)}
 .hero h1 .l3{color:var(--roof-green)}
 .hero-copy p{margin:0 0 20px;color:var(--ink-soft);font-size:18px;max-width:30em}
 
-.title-wrap{position:relative}
-.title-otter{position:absolute;right:4%;bottom:-6px;width:clamp(84px,11vw,138px);transform-origin:50% 100%;animation:wiggle 3.2s ease-in-out infinite}
-@keyframes wiggle{0%,70%,100%{transform:rotate(0) translateY(0)}76%{transform:rotate(-6deg) translateY(-4px)}84%{transform:rotate(5deg) translateY(-4px)}92%{transform:rotate(-2deg)}}
-@media (prefers-reduced-motion:reduce){.title-otter{animation:none}}
 
 /* signup (shared) */
 .inline{display:flex;gap:8px}
@@ -99,7 +95,7 @@ input[type=email]:focus,textarea:focus{border-color:var(--river);outline:none}
 
 /* scene */
 .scene{position:relative;margin-top:44px;aspect-ratio:1800/763;background:url(/assets/village_bg.webp) center/cover no-repeat;border-radius:18px 18px 0 0;overflow:hidden}
-.plot{position:absolute;transform:translate(-50%,-100%);width:13.5%}
+.plot{position:absolute;transform:translate(-50%,-100%);width:11.5%}
 .plot img{width:100%}
 .plot .stage{position:absolute;left:0;right:0;bottom:0;opacity:0;transition:opacity .25s}
 .plot .stage.on{opacity:1}
@@ -236,6 +232,11 @@ section.block{padding:110px 0}
 .err{display:none;color:#b23c17;font-size:13px;margin-top:6px}
 .invalid > .err,.invalid .err{display:block}
 
+.peek{position:absolute;right:34px;top:-74px;width:108px;pointer-events:none}
+.runner{position:absolute;left:15.6%;top:78px;width:62px;z-index:2;pointer-events:none}
+@media (max-width:900px){.runner{display:none}}
+@media (max-width:520px){.peek{width:84px;top:-58px;right:18px}}
+
 /* collapsible feedback */
 .fb{margin-top:30px;border-top:2px dashed var(--line);padding-top:22px}
 .fb summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;font-family:var(--round);font-size:19px;color:var(--wood-dark)}
@@ -313,10 +314,7 @@ footer .brand img{width:28px;height:28px}
     <div class="wrap hero-grid">
       <div>
         <span class="tag">Windows · macOS 데스크톱 공부 타이머 · 출시 준비 중</span>
-        <div class="title-wrap">
-          <h1>공부 시간은 집으로,<br><span class="l2">완성한 집은</span><br><span class="l3">나만의 마을로.</span></h1>
-          <img class="title-otter" src="/assets/otter_full.png" alt="수달공방의 수달">
-        </div>
+        <h1>공부 시간은 집으로,<br><span class="l2">완성한 집은</span><br><span class="l3">나만의 마을로.</span></h1>
       </div>
       <div class="hero-copy">
         <p>공부를 시작하면 바탕화면 한쪽에서 수달이 같이 일해요. 내가 공부한 시간만큼 수달이 집을 짓고, 집이 모이면 마을이 돼요.</p>
@@ -345,8 +343,8 @@ footer .brand img{width:28px;height:28px}
 
     <div class="wrap">
       <div class="scene" role="img" aria-label="수달이 마을의 빈 땅에 집을 짓고 있는 장면">
-        <div class="plot" style="left:24%;top:55%"><img src="/assets/house_4_red.png" alt=""></div>
-        <div class="plot" id="building" style="left:42.5%;top:55%">
+        <div class="plot" style="left:23.5%;top:55%"><img src="/assets/house_4_red.png" alt=""></div>
+        <div class="plot" id="building" style="left:42%;top:55%">
           <img class="stage on" src="/assets/house_0.png" alt="">
           <img class="stage" src="/assets/house_1.png" alt="">
           <img class="stage" src="/assets/house_2.png" alt="">
@@ -354,7 +352,7 @@ footer .brand img{width:28px;height:28px}
           <img class="stage" src="/assets/house_4_green.png" alt="">
           <img src="/assets/house_4_green.png" alt="" style="visibility:hidden">
         </div>
-        <div class="worker" style="left:54.5%;top:57%"><img class="bob" id="workerImg" src="/assets/otter_axe.png" alt=""></div>
+        <div class="worker" style="left:52.5%;top:57%"><img class="bob" id="workerImg" src="/assets/otter_axe.png" alt=""></div>
       </div>
       <div class="board" aria-hidden="true">
         <div class="board-inner">
@@ -491,6 +489,7 @@ footer .brand img{width:28px;height:28px}
       <h2 class="h2">앞으로 지을 것들</h2>
       <p class="lead">마을은 계속 넓어져요. 첫 버전은 집 짓기와 공부 기록부터 시작해요.</p>
       <div class="road">
+        <img class="runner" src="/assets/otter_run.png" alt="">
         <div class="ver now">
           <div class="pic"><img src="/assets/house_4_red.png" alt=""></div>
           <div class="card">
@@ -539,6 +538,7 @@ footer .brand img{width:28px;height:28px}
   <section class="launch" id="launch">
     <div class="wrap">
       <div class="launch-box">
+        <img class="peek" src="/assets/otter_peek.png" alt="">
         <div class="sign">출시 준비 중</div>
         <h2 class="h2">출시되면<br>가장 먼저 알려드릴게요</h2>
         <p class="lead">수달공방은 아직 출시 전인 Windows · macOS 데스크톱 앱이에요. 지금 신청하면 출시하는 날 메일로 알려드려요. 앱을 내려받거나 결제하는 절차는 없어요.</p>
