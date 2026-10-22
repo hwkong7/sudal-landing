@@ -144,8 +144,19 @@ section.block{padding:110px 0}
 
 .stages{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:44px;align-items:end}
 .stg{text-align:center}
-.stg .pic{height:180px;display:flex;align-items:flex-end;justify-content:center;border-bottom:4px solid var(--sand);padding-bottom:6px}
-.stg img{max-height:166px;width:auto}
+.stg .pic{height:180px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:6px}
+.stg img{max-height:166px;width:auto;transition:opacity .45s ease,filter .45s ease,transform .45s cubic-bezier(.3,1.6,.5,1)}
+.stg .track{height:6px;margin:0 -8px;background:#efdcc0;overflow:hidden}
+.stg:first-child .track{margin-left:0;border-radius:3px 0 0 3px}
+.stg:last-child .track{margin-right:0;border-radius:0 3px 3px 0}
+.stg .track i{display:block;height:100%;width:0;background:repeating-linear-gradient(45deg,#e0874d 0 6px,#d0713a 6px 12px);transition:width .6s linear}
+.stg span{transition:color .3s}
+.stages.anim .stg img{opacity:.22;filter:grayscale(1) brightness(1.1);transform:translateY(8px) scale(.94)}
+.stages.anim .stg span{color:#d9bfa1}
+.stages.anim .stg.fill .track i{width:100%}
+.stages.anim .stg.on img{opacity:1;filter:none;transform:none}
+.stages.anim .stg.on span{color:var(--brick)}
+.stages:not(.anim) .stg .track i{width:100%}
 .stg b{display:block;font-family:var(--round);font-weight:400;font-size:19px;margin-top:12px}
 .stg span{font-size:14px;font-weight:600;color:var(--brick)}
 .note{margin-top:28px;font-size:15px;color:var(--ink-soft)}
@@ -258,6 +269,7 @@ footer .brand img{width:28px;height:28px}
   .flow{grid-template-columns:1fr 1fr;row-gap:36px}
   .flow::before{display:none}
   .stages{grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+  .stg .track{margin:0 -3px}
   .stg .pic{height:100px}
   .stg img{max-height:92px}
   .stg b{font-size:15px}
@@ -408,12 +420,12 @@ footer .brand img{width:28px;height:28px}
     <div class="wrap">
       <h2 class="h2">30분 공부하면 집 한 채</h2>
       <p class="lead">목표를 정할 필요가 없어요. 공부한 만큼 집이 한 단계씩 올라가고, 남은 시간은 다음 집으로 넘어가요.</p>
-      <div class="stages">
-        <div class="stg"><div class="pic"><img src="/assets/house_0.png" alt=""></div><b>터 다지기</b><span>0%</span></div>
-        <div class="stg"><div class="pic"><img src="/assets/house_1.png" alt=""></div><b>뼈대</b><span>20%</span></div>
-        <div class="stg"><div class="pic"><img src="/assets/house_2.png" alt=""></div><b>벽</b><span>45%</span></div>
-        <div class="stg"><div class="pic"><img src="/assets/house_3_red.png" alt=""></div><b>지붕</b><span>70%</span></div>
-        <div class="stg"><div class="pic"><img src="/assets/house_4_red.png" alt=""></div><b>완성</b><span>100%</span></div>
+      <div class="stages" id="stages">
+        <div class="stg"><div class="pic"><img src="/assets/house_0.png" alt=""></div><div class="track"><i></i></div><b>터 다지기</b><span>0%</span></div>
+        <div class="stg"><div class="pic"><img src="/assets/house_1.png" alt=""></div><div class="track"><i></i></div><b>뼈대</b><span>20%</span></div>
+        <div class="stg"><div class="pic"><img src="/assets/house_2.png" alt=""></div><div class="track"><i></i></div><b>벽</b><span>45%</span></div>
+        <div class="stg"><div class="pic"><img src="/assets/house_3_red.png" alt=""></div><div class="track"><i></i></div><b>지붕</b><span>70%</span></div>
+        <div class="stg"><div class="pic"><img src="/assets/house_4_red.png" alt=""></div><div class="track"><i></i></div><b>완성</b><span>100%</span></div>
       </div>
       <p class="note">지붕 색은 집마다 빨강, 초록으로 달라져요. 집 한 채에 걸리는 시간은 설정에서 바꿀 수 있어요.</p>
     </div>
@@ -566,8 +578,8 @@ footer .brand img{width:28px;height:28px}
 
 <footer>
   <div class="wrap">
-    <span class="brand"><img src="/assets/icon.png" alt="">수달공방</span>
-    <span>혼자 공부하는 사람 옆에 수달 한 마리. 2026 수달공방 팀</span>
+    <span class="brand"><img src="/assets/icon.png" alt="">© 2026 수달공방 (Otter Workshop)</span>
+    <span>Windows · macOS 데스크톱 앱 · 출시 준비 중</span>
   </div>
 </footer>
 
@@ -611,6 +623,25 @@ footer .brand img{width:28px;height:28px}
   }
   if(reduce){pct=45;secs=810;render()}
   else{var hold=0;setInterval(function(){if(pct>=100){if(++hold>14){pct=0;hold=0}render();return}pct=Math.min(100,pct+1);secs+=18;render()},120);render()}
+
+  /* house stages: fill the line, then light up each stage */
+  var stagesEl=document.getElementById('stages');
+  if(stagesEl&&!reduce&&'IntersectionObserver' in window){
+    var stgs=[].slice.call(stagesEl.querySelectorAll('.stg')),timers=[],played=false;
+    stagesEl.classList.add('anim');
+    function reset(){timers.forEach(clearTimeout);timers=[];stgs.forEach(function(el){el.classList.remove('fill','on')});played=false}
+    function play(){
+      if(played)return;played=true;
+      stgs.forEach(function(el,i){
+        timers.push(setTimeout(function(){el.classList.add('fill')},200+i*750));
+        timers.push(setTimeout(function(){el.classList.add('on')},200+i*750+520));
+      });
+    }
+    new IntersectionObserver(function(es){es.forEach(function(e){
+      if(e.isIntersecting&&e.intersectionRatio>=.45)play();
+      else if(!e.isIntersecting)reset();
+    })},{threshold:[0,.45]}).observe(stagesEl);
+  }
 
   /* consent "자세히 보기" toggles */
   var tpl=document.getElementById('policyTpl');
