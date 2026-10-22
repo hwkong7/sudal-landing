@@ -69,6 +69,11 @@ a{color:var(--river-deep)}
 .hero h1 .l3{color:var(--roof-green)}
 .hero-copy p{margin:0 0 20px;color:var(--ink-soft);font-size:18px;max-width:30em}
 
+.title-wrap{position:relative}
+.title-otter{position:absolute;right:4%;bottom:-6px;width:clamp(84px,11vw,138px);transform-origin:50% 100%;animation:wiggle 3.2s ease-in-out infinite}
+@keyframes wiggle{0%,70%,100%{transform:rotate(0) translateY(0)}76%{transform:rotate(-6deg) translateY(-4px)}84%{transform:rotate(5deg) translateY(-4px)}92%{transform:rotate(-2deg)}}
+@media (prefers-reduced-motion:reduce){.title-otter{animation:none}}
+
 /* signup (shared) */
 .inline{display:flex;gap:8px}
 .inline input{flex:1;min-width:0}
@@ -94,12 +99,13 @@ input[type=email]:focus,textarea:focus{border-color:var(--river);outline:none}
 
 /* scene */
 .scene{position:relative;margin-top:44px;aspect-ratio:1800/763;background:url(/assets/village_bg.webp) center/cover no-repeat;border-radius:18px 18px 0 0;overflow:hidden}
-.plot{position:absolute;transform:translate(-50%,-100%);width:10%}
+.plot{position:absolute;transform:translate(-50%,-100%);width:13.5%}
 .plot img{width:100%}
 .plot .stage{position:absolute;left:0;right:0;bottom:0;opacity:0;transition:opacity .25s}
 .plot .stage.on{opacity:1}
-.worker{position:absolute;width:6.6%;transform:translate(-50%,-100%)}
-.worker img{width:100%}
+.worker{position:absolute;height:15.5%;transform:translate(-50%,-100%);display:flex;align-items:flex-end;justify-content:center}
+.worker img{height:100%;width:auto;max-width:none}
+.worker img.rest{height:92%}
 .worker .bob{animation:hammer .7s steps(2) infinite}
 @keyframes hammer{50%{transform:translateY(-6%) rotate(-3deg)}}
 .pop{animation:pop .45s ease-out}
@@ -307,7 +313,10 @@ footer .brand img{width:28px;height:28px}
     <div class="wrap hero-grid">
       <div>
         <span class="tag">Windows · macOS 데스크톱 공부 타이머 · 출시 준비 중</span>
-        <h1>공부 시간은 집으로,<br><span class="l2">완성한 집은</span><br><span class="l3">나만의 마을로.</span></h1>
+        <div class="title-wrap">
+          <h1>공부 시간은 집으로,<br><span class="l2">완성한 집은</span><br><span class="l3">나만의 마을로.</span></h1>
+          <img class="title-otter" src="/assets/otter_full.png" alt="수달공방의 수달">
+        </div>
       </div>
       <div class="hero-copy">
         <p>공부를 시작하면 바탕화면 한쪽에서 수달이 같이 일해요. 내가 공부한 시간만큼 수달이 집을 짓고, 집이 모이면 마을이 돼요.</p>
@@ -336,8 +345,8 @@ footer .brand img{width:28px;height:28px}
 
     <div class="wrap">
       <div class="scene" role="img" aria-label="수달이 마을의 빈 땅에 집을 짓고 있는 장면">
-        <div class="plot" style="left:23%;top:53%"><img src="/assets/house_4_red.png" alt=""></div>
-        <div class="plot" id="building" style="left:41.5%;top:53%">
+        <div class="plot" style="left:24%;top:55%"><img src="/assets/house_4_red.png" alt=""></div>
+        <div class="plot" id="building" style="left:42.5%;top:55%">
           <img class="stage on" src="/assets/house_0.png" alt="">
           <img class="stage" src="/assets/house_1.png" alt="">
           <img class="stage" src="/assets/house_2.png" alt="">
@@ -345,7 +354,7 @@ footer .brand img{width:28px;height:28px}
           <img class="stage" src="/assets/house_4_green.png" alt="">
           <img src="/assets/house_4_green.png" alt="" style="visibility:hidden">
         </div>
-        <div class="worker" style="left:50.5%;top:54%"><img class="bob" id="workerImg" src="/assets/otter_axe.png" alt=""></div>
+        <div class="worker" style="left:54.5%;top:57%"><img class="bob" id="workerImg" src="/assets/otter_axe.png" alt=""></div>
       </div>
       <div class="board" aria-hidden="true">
         <div class="board-inner">
@@ -606,6 +615,7 @@ footer .brand img{width:28px;height:28px}
   var stages=[].slice.call(document.querySelectorAll('#building .stage'));
   var chips=[].slice.call(document.querySelectorAll('#chips .chip'));
   var pctEl=document.getElementById('pct'),fill=document.getElementById('barFill'),clock=document.getElementById('clock'),worker=document.getElementById('workerImg');
+  ['otter_axe','otter_log','otter_full'].forEach(function(n){var i=new Image();i.src='/assets/'+n+'.png'});
   var marks=[0,20,45,70,100],pct=0,secs=0,last=-1;
   function stageFor(p){var s=0;for(var i=0;i<marks.length;i++){if(p>=marks[i])s=i}return s}
   function two(n){return String(n).padStart(2,'0')}
@@ -617,7 +627,8 @@ footer .brand img{width:28px;height:28px}
       if(last!==-1&&!reduce){stages[s].classList.remove('pop');void stages[s].offsetWidth;stages[s].classList.add('pop')}
       last=s;
     }
-    worker.src=s===4?'/assets/otter_smile.png':(pct%20<10?'/assets/otter_axe.png':'/assets/otter_log.png');
+    var want=s===4?'/assets/otter_full.png':(pct%20<10?'/assets/otter_axe.png':'/assets/otter_log.png');
+    if(worker.getAttribute('src')!==want){worker.setAttribute('src',want);worker.classList.toggle('rest',s===4)}
     pctEl.textContent=Math.floor(pct)+'%';fill.style.width=pct+'%';
     var t=Math.round(secs);clock.textContent=two(Math.floor(t/3600))+':'+two(Math.floor(t/60)%60)+':'+two(t%60);
   }
