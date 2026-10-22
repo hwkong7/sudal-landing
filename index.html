@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>수달공방 — 공부한 만큼 수달이 집을 지어요</title>
+<meta name="description" content="공부를 시작하면 수달이 바탕화면에 나와 옆에서 같이 집을 지어요. 공부 시간은 집이 되고, 집은 마을이 되는 데스크톱 공부 타이머.">
+<meta property="og:title" content="수달공방 — 공부한 만큼 수달이 집을 지어요">
+<meta property="og:description" content="옆에서 같이 일하는 수달과 함께 공부하는 데스크톱 앱. 출시 전 2분 설문에 참여해 주세요.">
+<meta property="og:image" content="/assets/og.jpg">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#fbe9d6">
+<link rel="icon" type="image/png" href="/assets/favicon.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<style>@font-face{font-family:"Galmuri11";src:url(/assets/fonts/Galmuri11.woff2) format("woff2");font-weight:400;font-display:swap}@font-face{font-family:"Galmuri11";src:url(/assets/fonts/Galmuri11-Bold.woff2) format("woff2");font-weight:700;font-display:swap}</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{
+  --sky:#fbe9d6;
+  --paper:#fff8ec;
+  --sand:#f1c48d;
+  --wood:#8a5532;
+  --wood-dark:#4b2b17;
+  --ink:#3a2414;
+  --ink-soft:#6f5440;
+  --river:#4f8fb3;
+  --river-deep:#2f6a8c;
+  --leaf:#6d8a57;
+  --brick:#d0713a;
+  --line:#e5cfb1;
+  --pixel:"Galmuri11","Galmuri9",monospace;
+  --body:"Pretendard",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--sky);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.7;-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:break-word}
+img{max-width:100%;display:block}
+.px{image-rendering:pixelated}
+a{color:var(--river-deep)}
+:focus-visible{outline:3px solid var(--river);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* header */
+.top{position:sticky;top:0;z-index:20;background:rgba(251,233,214,.92);backdrop-filter:blur(6px);border-bottom:2px solid transparent;transition:border-color .2s}
+.top.scrolled{border-bottom-color:var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-family:var(--pixel);font-size:20px}
+.brand img{width:36px;height:36px;border-radius:9px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--pixel);font-size:16px;text-decoration:none;cursor:pointer;border:0;border-radius:10px;padding:13px 22px;line-height:1.2;transition:transform .12s, box-shadow .12s}
+.btn-go{background:var(--brick);color:#fff;box-shadow:0 4px 0 #9a4b20}
+.btn-go:hover{transform:translateY(-1px);box-shadow:0 5px 0 #9a4b20}
+.btn-go:active{transform:translateY(3px);box-shadow:0 1px 0 #9a4b20}
+.btn-plain{background:var(--paper);color:var(--ink);box-shadow:0 4px 0 var(--line);border:2px solid var(--line)}
+.btn-plain:active{transform:translateY(3px);box-shadow:0 1px 0 var(--line)}
+.top .btn{padding:9px 16px;font-size:14px}
+
+/* hero */
+.hero{padding:48px 0 0}
+.hero h1{font-family:var(--pixel);font-weight:700;font-size:clamp(34px,6vw,64px);line-height:1.25;margin:0;letter-spacing:-.01em;color:var(--wood-dark)}
+.hero-copy{display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:end}
+.hero-copy p{margin:0 0 6px;color:var(--ink-soft);font-size:18px;max-width:34em}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}
+.hero-note{font-size:14px;color:var(--ink-soft);margin-top:14px}
+.scene{position:relative;margin-top:40px;aspect-ratio:1800/763;background:url(/assets/village_bg.webp) center/cover no-repeat;image-rendering:pixelated}
+.plot{position:absolute;transform:translate(-50%,-100%);width:10.5%}
+.plot img{width:100%;image-rendering:pixelated;transition:opacity .25s}
+.plot .stage{position:absolute;inset:auto 0 0 0;opacity:0}
+.plot .stage.on{opacity:1}
+.worker{position:absolute;width:6.4%;transform:translate(-50%,-100%);image-rendering:pixelated}
+.worker img{width:100%}
+.worker .bob{animation:hammer .7s steps(2) infinite}
+@keyframes hammer{50%{transform:translateY(-6%) rotate(-3deg)}}
+.pop{animation:pop .45s ease-out}
+@keyframes pop{0%{transform:scale(.85)}60%{transform:scale(1.06)}100%{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.worker .bob,.pop{animation:none}}
+
+/* wooden status panel (mirrors the app's bottom bar) */
+.board{background:var(--wood);padding:14px;border-radius:0 0 18px 18px;box-shadow:inset 0 3px 0 rgba(255,255,255,.12)}
+.board-inner{display:grid;grid-template-columns:1.4fr 1fr;gap:14px}
+.card-paper{background:var(--paper);border-radius:12px;padding:16px 18px;border:2px solid #f3dfc2}
+.build-head{display:flex;justify-content:space-between;font-family:var(--pixel);font-size:16px}
+.bar{height:16px;border-radius:8px;border:2px solid var(--wood);background:repeating-linear-gradient(45deg,#f6e7d0 0 6px,#efdcc0 6px 12px);overflow:hidden;margin:10px 0 12px}
+.bar i{display:block;height:100%;width:0;background:repeating-linear-gradient(45deg,#e0874d 0 6px,#d0713a 6px 12px);transition:width .6s ease}
+.chips{display:flex;justify-content:space-between;gap:4px}
+.chip{font-family:var(--pixel);font-size:12px;padding:4px 8px;border-radius:6px;background:#f2e3cc;color:var(--ink-soft);transition:background .2s,color .2s}
+.chip.on{background:var(--brick);color:#fff}
+.timer{background:var(--wood-dark);border-radius:12px;padding:14px 18px;color:#f9e6c8;display:flex;flex-direction:column;justify-content:center}
+.timer small{font-family:var(--pixel);font-size:13px;opacity:.85}
+.timer b{font-family:var(--pixel);font-size:clamp(28px,4vw,40px);color:#ffd36b;letter-spacing:.06em;font-weight:400}
+
+/* sections */
+section.block{padding:110px 0}
+.paper-bg{background:var(--paper)}
+.h2{font-family:var(--pixel);font-weight:700;font-size:clamp(26px,3.6vw,38px);line-height:1.35;margin:0 0 18px;color:var(--wood-dark)}
+.lead{font-size:18px;color:var(--ink-soft);max-width:36em;margin:0}
+.split{display:grid;grid-template-columns:1fr 1.25fr;gap:56px;align-items:center}
+.split.rev{grid-template-columns:1.25fr 1fr}
+.split.rev .split-text{order:2}
+.desk{border-radius:14px;overflow:hidden;border:3px solid var(--wood-dark);background:#1e1e1e;box-shadow:0 18px 40px -18px rgba(75,43,23,.45)}
+.desk-bar{display:flex;gap:6px;padding:9px 12px;background:#2b2b2b}
+.desk-bar span{width:10px;height:10px;border-radius:50%;background:#555}
+.desk video{width:100%;display:block}
+.facts{margin:26px 0 0;padding:0;list-style:none;display:grid;gap:12px}
+.facts li{display:flex;gap:12px;align-items:flex-start}
+.facts li::before{content:"";flex:none;width:10px;height:10px;margin-top:9px;background:var(--leaf);box-shadow:2px 2px 0 var(--wood-dark)}
+
+/* states flow */
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:48px;position:relative}
+.flow::before{content:"";position:absolute;left:12%;right:12%;top:78px;border-top:3px dashed var(--line)}
+.state{text-align:center;padding:0 10px;position:relative}
+.state .pic{height:156px;display:flex;align-items:center;justify-content:center}
+.state .pic img{max-height:120px;width:auto;image-rendering:pixelated;background:var(--paper);padding:0 8px}
+.state h3{font-family:var(--pixel);font-size:19px;margin:10px 0 2px}
+.state .when{display:inline-block;font-family:var(--pixel);font-size:12px;color:var(--river-deep);background:#e3eef4;border-radius:6px;padding:3px 8px;margin-bottom:8px}
+.state p{margin:0;color:var(--ink-soft);font-size:15px;line-height:1.6}
+
+/* house stages */
+.stages{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:44px;align-items:end}
+.stg{text-align:center}
+.stg .pic{height:170px;display:flex;align-items:flex-end;justify-content:center;border-bottom:4px solid var(--sand)}
+.stg img{max-height:160px;width:auto;image-rendering:pixelated}
+.stg b{display:block;font-family:var(--pixel);font-size:16px;margin-top:12px;font-weight:400}
+.stg span{font-family:var(--pixel);font-size:13px;color:var(--brick)}
+.note{margin-top:28px;font-size:15px;color:var(--ink-soft)}
+
+.shots{display:grid;grid-template-columns:1.35fr 1fr;gap:22px;margin-top:44px}
+.shot{margin:0}
+.shot img,.shot video{border-radius:14px;border:3px solid var(--wood);width:100%;background:var(--paper)}
+.shot figcaption{font-size:15px;color:var(--ink-soft);margin-top:10px}
+
+/* survey */
+.survey-sec{background:var(--wood);padding:100px 0 110px;position:relative}
+.survey-sec::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.05) 0 2px,transparent 2px 46px);pointer-events:none}
+.survey-box{position:relative;max-width:760px;margin:0 auto;background:var(--paper);border-radius:20px;padding:44px clamp(20px,5vw,52px) 48px;border:3px solid var(--wood-dark);box-shadow:0 10px 0 var(--wood-dark)}
+.sign{position:absolute;top:-30px;left:50%;transform:translateX(-50%);background:#c98a55;color:#fff8ec;font-family:var(--pixel);font-size:20px;padding:10px 26px;border-radius:10px;border:3px solid var(--wood-dark);white-space:nowrap}
+.survey-intro{display:flex;gap:18px;align-items:center;margin:8px 0 30px}
+.survey-intro img{width:84px;flex:none;image-rendering:pixelated}
+.survey-intro p{margin:0;color:var(--ink-soft)}
+.progress{position:sticky;top:64px;z-index:5;background:var(--paper);padding:10px 0 12px;margin:0 0 6px;border-bottom:2px dashed var(--line)}
+.progress-row{display:flex;justify-content:space-between;font-family:var(--pixel);font-size:13px;color:var(--ink-soft);margin-bottom:6px}
+.progress .bar{margin:0;height:14px}
+fieldset{border:0;margin:0;padding:26px 0;border-bottom:1px solid var(--line)}
+legend{float:left;width:100%;font-weight:700;font-size:18px;padding:0;margin:0 0 4px}
+legend .req{margin-left:6px}
+legend + *{clear:both}
+legend .req{color:var(--brick);font-size:14px;font-weight:600}
+.hint{font-size:14px;color:var(--ink-soft);margin:0 0 12px}
+.opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.opt{position:relative}
+.opt input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.opt span{display:inline-block;padding:9px 15px;border-radius:10px;background:#fff;border:2px solid var(--line);font-size:15px;line-height:1.4;cursor:pointer;transition:background .12s,border-color .12s,color .12s}
+.opt input:checked + span{background:var(--wood-dark);border-color:var(--wood-dark);color:#fff}
+.opt input:focus-visible + span{outline:3px solid var(--river);outline-offset:2px}
+.opt input:disabled + span{opacity:.45;cursor:not-allowed}
+.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px}
+.scale .opt span{display:block;text-align:center;font-family:var(--pixel);font-size:18px;padding:12px 0}
+.scale-labels{display:flex;justify-content:space-between;font-size:13px;color:var(--ink-soft);margin-top:6px;gap:12px}
+.scale-labels span:last-child{text-align:right}
+textarea,input[type=email]{width:100%;font:inherit;font-size:16px;padding:12px 14px;border-radius:10px;border:2px solid var(--line);background:#fff;color:var(--ink);margin-top:10px}
+textarea{min-height:110px;resize:vertical}
+textarea:focus,input[type=email]:focus{border-color:var(--river);outline:none}
+.consent{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--ink-soft);margin-top:12px}
+.consent input{margin-top:5px;width:18px;height:18px;accent-color:var(--wood-dark)}
+.err{color:#b23c17;font-size:14px;margin-top:8px;display:none}
+fieldset.invalid .err{display:block}
+fieldset.invalid legend{color:#b23c17}
+.submit-row{margin-top:30px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.submit-row .btn{font-size:18px;padding:16px 40px}
+.form-msg{font-size:15px;color:#b23c17;min-height:1.5em;text-align:center}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.thanks{text-align:center;padding:20px 0 6px}
+.thanks img{width:140px;margin:0 auto 12px;image-rendering:pixelated}
+.thanks h3{font-family:var(--pixel);font-size:26px;margin:0 0 8px;color:var(--wood-dark)}
+.thanks p{color:var(--ink-soft);margin:0 auto;max-width:28em}
+.thanks .houses{display:flex;justify-content:center;align-items:flex-end;gap:6px;margin:22px 0 4px}
+.thanks .houses img{width:64px;margin:0}
+
+footer{background:var(--wood-dark);color:#e9d3b5;padding:34px 0;font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
+footer .brand{color:#fff3df;font-size:16px}
+footer .brand img{width:28px;height:28px}
+
+@media (max-width:860px){
+  .hero{padding-top:32px}
+  .hero-copy,.split,.split.rev,.shots{grid-template-columns:1fr;gap:28px}
+  .split.rev .split-text{order:0}
+  .board-inner{grid-template-columns:1fr}
+  .flow{grid-template-columns:1fr 1fr;row-gap:36px}
+  .flow::before{display:none}
+  .stages{grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+  .stg .pic{height:96px}
+  .stg img{max-height:90px}
+  .stg b{font-size:13px}
+  section.block{padding:76px 0}
+  .chip{font-size:11px;padding:3px 5px}
+}
+@media (max-width:520px){
+  body{font-size:16px}
+  .wrap{padding:0 16px}
+  .top .btn{display:none}
+  .scale .opt span{font-size:16px;padding:10px 0}
+  .survey-intro img{width:64px}
+  .sign{font-size:17px;padding:8px 18px}
+}
+</style>
+</head>
+<body>
+
+<header class="top" id="top">
+  <div class="wrap">
+    <a class="brand" href="#"><img src="/assets/icon.png" alt="" class="px">수달공방</a>
+    <a class="btn btn-go" href="#survey">설문 참여하기</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap hero-copy">
+      <h1>공부한 시간만큼<br>수달이 집을 지어요</h1>
+      <div>
+        <p>공부를 시작하면 수달이 바탕화면에 나와 옆에서 같이 일해요. 타이머는 신경 쓰지 않아도 돼요. 쌓인 시간은 집이 되고, 집은 마을이 돼요.</p>
+        <div class="hero-actions">
+          <a class="btn btn-go" href="#survey">2분 설문 참여하기</a>
+          <a class="btn btn-plain" href="#together">어떻게 쓰는지 보기</a>
+        </div>
+        <div class="hero-note">Windows, macOS용 데스크톱 앱이에요. 지금은 출시를 준비하고 있어요.</div>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div class="scene" id="scene" role="img" aria-label="수달이 마을의 빈 땅에 집을 짓고 있는 장면">
+        <div class="plot" style="left:23%;top:52%"><img class="px" src="/assets/house_4.png" alt=""></div>
+        <div class="plot" id="building" style="left:42%;top:52%">
+          <img class="stage on" src="/assets/house_0.png" alt="">
+          <img class="stage" src="/assets/house_1.png" alt="">
+          <img class="stage" src="/assets/house_2.png" alt="">
+          <img class="stage" src="/assets/house_3.png" alt="">
+          <img class="stage" src="/assets/house_4.png" alt="">
+          <img src="/assets/house_4.png" alt="" style="visibility:hidden">
+        </div>
+        <div class="worker" style="left:50.5%;top:53%"><img class="bob px" id="workerImg" src="/assets/otter_axe.png" alt=""></div>
+      </div>
+      <div class="board" aria-live="polite">
+        <div class="board-inner">
+          <div class="card-paper">
+            <div class="build-head"><span>2번째 집 짓는 중</span><span id="pct">0%</span></div>
+            <div class="bar"><i id="barFill"></i></div>
+            <div class="chips" id="chips">
+              <span class="chip on">터 다지기</span><span class="chip">뼈대</span><span class="chip">벽</span><span class="chip">지붕</span><span class="chip">완성</span>
+            </div>
+          </div>
+          <div class="timer">
+            <small>공부 중</small>
+            <b id="clock">00:00:00</b>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="together">
+    <div class="wrap split">
+      <div class="split-text">
+        <h2 class="h2">말 걸지 않고,<br>옆에만 있어 줘요</h2>
+        <p class="lead">친구랑 같이 공부하면 집중이 잘 되는 건 대화 때문이 아니라 누군가 옆에서 같이 하고 있어서예요. 수달공방은 그 자리를 수달이 채워요.</p>
+        <ul class="facts">
+          <li>공부 시작을 누르면 수달이 바탕화면 한쪽에 나와 나무를 나르고 망치질을 해요.</li>
+          <li>인강, 유튜브, 코딩처럼 화면을 보며 공부해도 다른 창을 가리지 않아요.</li>
+          <li>수달 크기는 작게, 보통, 크게 중에서 고르고, 더블클릭하면 작게 접혀요.</li>
+        </ul>
+      </div>
+      <div class="desk">
+        <div class="desk-bar"><span></span><span></span><span></span></div>
+        <video src="/assets/overlay.mp4" poster="/assets/overlay_poster.jpg" autoplay muted loop playsinline aria-label="코드 편집기 위에서 수달이 망치질하고 잠드는 모습"></video>
+      </div>
+    </div>
+  </section>
+
+  <section class="block paper-bg">
+    <div class="wrap">
+      <h2 class="h2">타이머를 안 눌러도<br>수달이 알아서 알아채요</h2>
+      <p class="lead">키보드와 마우스 입력으로 공부 중인지 판단해요. 자리를 비우면 감시하는 대신 수달이 꾸벅꾸벅 졸다가 잠들어요.</p>
+      <div class="flow">
+        <div class="state">
+          <div class="pic"><img src="/assets/otter_axe.png" alt="망치질하는 수달"></div>
+          <h3>작업</h3>
+          <span class="when">공부 중</span>
+          <p>나무를 들고 망치질하며 집을 지어요. 공부 시간이 쌓여요.</p>
+        </div>
+        <div class="state">
+          <div class="pic"><img src="/assets/otter_drowsy.png" alt="하품하는 수달"></div>
+          <h3>졸림</h3>
+          <span class="when">입력 없이 5분</span>
+          <p>하품하며 꾸벅꾸벅 졸아요. 공부 시간은 계속 인정돼요.</p>
+        </div>
+        <div class="state">
+          <div class="pic"><img src="/assets/otter_sleep.png" alt="웅크려 자는 수달"></div>
+          <h3>휴식</h3>
+          <span class="when">10분 또는 휴식 버튼</span>
+          <p>웅크려 잠들고 집 짓기도 멈춰요. 휴식 시간은 따로 기록돼요.</p>
+        </div>
+        <div class="state">
+          <div class="pic"><img src="/assets/otter_surprise.png" alt="깜짝 놀란 수달"></div>
+          <h3>깜짝</h3>
+          <span class="when">다시 입력하면</span>
+          <p>화들짝 깨어나서 하던 일을 다시 시작해요.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2 class="h2">30분 공부하면 집 한 채</h2>
+      <p class="lead">목표를 정할 필요가 없어요. 공부한 만큼 집이 한 단계씩 올라가고, 남은 시간은 다음 집으로 넘어가요.</p>
+      <div class="stages">
+        <div class="stg"><div class="pic"><img src="/assets/house_0.png" alt=""></div><b>터 다지기</b><span>0%</span></div>
+        <div class="stg"><div class="pic"><img src="/assets/house_1.png" alt=""></div><b>뼈대</b><span>20%</span></div>
+        <div class="stg"><div class="pic"><img src="/assets/house_2.png" alt=""></div><b>벽</b><span>45%</span></div>
+        <div class="stg"><div class="pic"><img src="/assets/house_3.png" alt=""></div><b>지붕</b><span>70%</span></div>
+        <div class="stg"><div class="pic"><img src="/assets/house_4.png" alt=""></div><b>완성</b><span>100%</span></div>
+      </div>
+      <p class="note">집 한 채에 걸리는 시간은 설정에서 5분부터 240분까지 바꿀 수 있어요.</p>
+    </div>
+  </section>
+
+  <section class="block paper-bg">
+    <div class="wrap">
+      <h2 class="h2">앱을 꺼도 마을은 남아요</h2>
+      <p class="lead">완성한 집은 마을에 하나씩 모여요. 다음에 켜면 짓던 집부터 이어서 짓고, 날마다 얼마나 공부했는지는 달력에 남아요.</p>
+      <div class="shots">
+        <figure class="shot">
+          <video src="/assets/village.mp4" poster="/assets/village_poster.jpg" autoplay muted loop playsinline aria-label="공부 시간에 따라 마을에 집이 지어지는 메인 화면"></video>
+          <figcaption>메인 화면. 공부하는 동안 집이 단계별로 올라가요.</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="/assets/shot_record.webp" alt="월별 공부 시간 달력 화면" loading="lazy">
+          <figcaption>공부 기록. 날짜를 누르면 그날 공부한 세션이 보여요.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="survey-sec" id="survey">
+    <div class="wrap">
+      <div class="survey-box">
+        <div class="sign">수달공방 설문</div>
+
+        <form id="form" novalidate>
+          <div class="survey-intro">
+            <img src="/assets/otter_smile.png" alt="">
+            <p>아직 만들고 있는 앱이에요. 써 보고 싶은지, 무엇이 더 있으면 좋을지 알려 주시면 다음 버전에 반영할게요. 2분이면 끝나요.</p>
+          </div>
+
+          <div class="progress" aria-hidden="true">
+            <div class="progress-row"><span>집 짓는 중</span><span id="fpct">0%</span></div>
+            <div class="bar"><i id="fbar"></i></div>
+          </div>
+
+          <div id="questions"></div>
+
+          <fieldset>
+            <legend>출시 알림 받기 <span class="req" style="color:var(--ink-soft)">선택</span></legend>
+            <p class="hint">출시되면 이메일로 한 번 알려 드려요.</p>
+            <input type="email" name="email" id="email" placeholder="you@example.com" autocomplete="email">
+            <label class="consent"><input type="checkbox" id="consent"> 출시 알림을 위해 이메일을 수집하는 것에 동의해요. 출시 안내 후 삭제해요.</label>
+            <div class="err" id="emailErr">이메일을 남기려면 동의에 체크해 주세요.</div>
+          </fieldset>
+
+          <div class="hp" aria-hidden="true"><label>웹사이트<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+
+          <div class="submit-row">
+            <button class="btn btn-go" type="submit" id="submitBtn">응답 보내기</button>
+            <div class="form-msg" id="formMsg" role="alert"></div>
+          </div>
+        </form>
+
+        <div class="thanks" id="thanks" hidden tabindex="-1">
+          <img src="/assets/otter_smile.png" alt="">
+          <h3>응답을 받았어요</h3>
+          <p>덕분에 수달이 집 한 채를 더 지었어요. 주변에 혼자 공부하는 친구가 있다면 이 페이지를 공유해 주세요.</p>
+          <div class="houses"><img src="/assets/house_4.png" alt=""><img src="/assets/house_4.png" alt=""><img class="pop" src="/assets/house_4.png" alt=""></div>
+          <div class="hero-actions" style="justify-content:center">
+            <button class="btn btn-plain" type="button" id="shareBtn">링크 복사하기</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="brand"><img src="/assets/icon.png" alt="" class="px">수달공방</span>
+    <span>혼자 공부하는 사람 옆에 수달 한 마리. 2026 수달공방 팀</span>
+  </div>
+</footer>
+
+<script src="/questions.js"></script>
+<script>
+(function(){
+  // header border on scroll
+  var top=document.getElementById('top');
+  addEventListener('scroll',function(){top.classList.toggle('scrolled',scrollY>8)},{passive:true});
+
+  // hero: build a house through its stages, mirroring the app
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var stages=[].slice.call(document.querySelectorAll('#building .stage'));
+  var chips=[].slice.call(document.querySelectorAll('#chips .chip'));
+  var pctEl=document.getElementById('pct'),fill=document.getElementById('barFill'),clock=document.getElementById('clock');
+  var worker=document.getElementById('workerImg');
+  var marks=[0,20,45,70,100];
+  var pct=0, secs=0;
+  function stageFor(p){var s=0;for(var i=0;i<marks.length;i++){if(p>=marks[i])s=i}return s}
+  function fmt(n){return String(n).padStart(2,'0')}
+  var last=-1;
+  function render(){
+    var s=stageFor(pct);
+    if(s!==last){
+      stages.forEach(function(el,i){el.classList.toggle('on',i===s)});
+      chips.forEach(function(el,i){el.classList.toggle('on',i===s)});
+      if(last!==-1&&!reduce){stages[s].classList.remove('pop');void stages[s].offsetWidth;stages[s].classList.add('pop')}
+      last=s;
+    }
+    worker.src = s===4 ? '/assets/otter_smile.png' : (pct%20<10?'/assets/otter_axe.png':'/assets/otter_log.png');
+    pctEl.textContent=Math.floor(pct)+'%';
+    fill.style.width=pct+'%';
+    var t=Math.round(secs);
+    clock.textContent=fmt(Math.floor(t/3600))+':'+fmt(Math.floor(t/60)%60)+':'+fmt(t%60);
+  }
+  if(reduce){pct=45;secs=810;render()}
+  else{
+    var hold=0;
+    setInterval(function(){
+      if(pct>=100){ if(++hold>14){pct=0;hold=0;} render(); return; }
+      pct=Math.min(100,pct+1); secs+=18; render();
+    },120);
+    render();
+  }
+
+  // survey
+  var Q=window.SURVEY, box=document.getElementById('questions');
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  Q.forEach(function(q,qi){
+    var fs=document.createElement('fieldset');fs.dataset.q=q.id;
+    var html='<legend>'+esc(q.title)+(q.required?' <span class="req">필수</span>':'')+'</legend>';
+    if(q.hint)html+='<p class="hint">'+esc(q.hint)+'</p>';
+    if(q.type==='single'||q.type==='multi'){
+      html+='<div class="opts">';
+      q.options.forEach(function(o,i){
+        html+='<label class="opt"><input type="'+(q.type==='single'?'radio':'checkbox')+'" name="'+q.id+'" value="'+esc(o)+'"><span>'+esc(o)+'</span></label>';
+      });
+      html+='</div>';
+    }else if(q.type==='scale'){
+      html+='<div class="scale">';
+      for(var i=1;i<=5;i++)html+='<label class="opt"><input type="radio" name="'+q.id+'" value="'+i+'" aria-label="'+i+'점"><span>'+i+'</span></label>';
+      html+='</div><div class="scale-labels"><span>1 '+esc(q.min)+'</span><span>5 '+esc(q.max)+'</span></div>';
+    }else{
+      html+='<textarea name="'+q.id+'" maxlength="1000" placeholder="'+esc(q.placeholder||'')+'"></textarea>';
+    }
+    html+='<div class="err">'+(q.type==='multi'?'하나 이상 골라 주세요.':'답을 골라 주세요.')+'</div>';
+    fs.innerHTML=html;box.appendChild(fs);
+  });
+
+  var form=document.getElementById('form');
+  function valueOf(q){
+    if(q.type==='multi')return [].slice.call(form.querySelectorAll('input[name="'+q.id+'"]:checked')).map(function(i){return i.value});
+    if(q.type==='text'){return form.querySelector('[name="'+q.id+'"]').value.trim()}
+    var c=form.querySelector('input[name="'+q.id+'"]:checked');return c?(q.type==='scale'?Number(c.value):c.value):null;
+  }
+  function answered(q){var v=valueOf(q);return Array.isArray(v)?v.length>0:!!v}
+  var reqs=Q.filter(function(q){return q.required});
+  var fbar=document.getElementById('fbar'),fpct=document.getElementById('fpct');
+  function updateProgress(){
+    var n=reqs.filter(answered).length, p=Math.round(n/reqs.length*100);
+    fbar.style.width=p+'%';fpct.textContent=p===100?'완성!':p+'%';
+  }
+  form.addEventListener('change',function(e){
+    var fs=e.target.closest('fieldset');
+    if(fs&&fs.dataset.q){
+      var q=Q.filter(function(x){return x.id===fs.dataset.q})[0];
+      if(q.max){
+        var boxes=fs.querySelectorAll('input[type=checkbox]'),n=fs.querySelectorAll('input:checked').length;
+        boxes.forEach(function(b){b.disabled=!b.checked&&n>=q.max});
+      }
+      if(answered(q))fs.classList.remove('invalid');
+    }
+    updateProgress();
+  });
+
+  var ref=new URLSearchParams(location.search).get('ref')||'';
+  var msg=document.getElementById('formMsg'),btn=document.getElementById('submitBtn');
+  form.addEventListener('submit',function(e){
+    e.preventDefault();msg.textContent='';
+    var firstBad=null, answers={};
+    Q.forEach(function(q){
+      var fs=form.querySelector('fieldset[data-q="'+q.id+'"]');
+      answers[q.id]=valueOf(q);
+      var bad=q.required&&!answered(q);
+      fs.classList.toggle('invalid',bad);
+      if(bad&&!firstBad)firstBad=fs;
+    });
+    var email=document.getElementById('email').value.trim(),consent=document.getElementById('consent').checked;
+    var efs=document.getElementById('email').closest('fieldset');
+    var emailBad=email&&!consent;
+    efs.classList.toggle('invalid',emailBad);
+    if(emailBad&&!firstBad)firstBad=efs;
+    if(firstBad){
+      msg.textContent='표시된 문항에 답해 주세요.';
+      firstBad.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});
+      var f=firstBad.querySelector('input,textarea');if(f)f.focus({preventScroll:true});
+      return;
+    }
+    btn.disabled=true;btn.textContent='보내는 중…';
+    fetch('/api/survey',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({answers:answers,email:consent?email:'',consent:consent,ref:ref,website:form.website.value})})
+    .then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error(j.error||'저장하지 못했어요');return j})})
+    .then(function(){
+      form.hidden=true;var t=document.getElementById('thanks');t.hidden=false;
+      t.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});t.focus({preventScroll:true});
+      try{localStorage.setItem('sudal_survey_done','1')}catch(_){}
+    })
+    .catch(function(err){
+      msg.textContent=(err&&err.message)||'저장하지 못했어요. 잠시 후 다시 보내 주세요.';
+      btn.disabled=false;btn.textContent='응답 보내기';
+    });
+  });
+
+  document.getElementById('shareBtn').addEventListener('click',function(){
+    var url=location.origin+location.pathname,b=this;
+    var done=function(){b.textContent='복사했어요'};
+    if(navigator.share){navigator.share({title:'수달공방',text:'공부한 만큼 수달이 집을 지어요',url:url}).catch(function(){})}
+    else if(navigator.clipboard){navigator.clipboard.writeText(url).then(done,function(){b.textContent=url})}
+    else{b.textContent=url}
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>수달공방 설문 결과</title>
+<link rel="icon" type="image/png" href="/assets/favicon.png">
+<style>@font-face{font-family:"Galmuri11";src:url(/assets/fonts/Galmuri11.woff2) format("woff2");font-weight:400;font-display:swap}@font-face{font-family:"Galmuri11";src:url(/assets/fonts/Galmuri11-Bold.woff2) format("woff2");font-weight:700;font-display:swap}</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{--sky:#fbe9d6;--paper:#fff8ec;--wood:#8a5532;--wood-dark:#4b2b17;--ink:#3a2414;--ink-soft:#6f5440;--brick:#d0713a;--river:#4f8fb3;--line:#e5cfb1;--pixel:"Galmuri11",monospace;--body:"Pretendard",-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--sky);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;word-break:keep-all}
+.wrap{max-width:960px;margin:0 auto;padding:32px 16px 80px}
+h1{font-family:var(--pixel);font-size:30px;color:var(--wood-dark);margin:0 0 6px;display:flex;align-items:center;gap:12px}
+h1 img{width:44px;border-radius:10px;image-rendering:pixelated}
+.sub{color:var(--ink-soft);margin:0 0 26px}
+.gate{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+.gate input{flex:1;min-width:220px;font:inherit;padding:11px 14px;border-radius:10px;border:2px solid var(--line);background:#fff}
+.btn{font-family:var(--pixel);font-size:15px;border:0;border-radius:10px;padding:12px 20px;cursor:pointer;background:var(--brick);color:#fff;box-shadow:0 4px 0 #9a4b20}
+.btn.plain{background:var(--paper);color:var(--ink);box-shadow:0 4px 0 var(--line);border:2px solid var(--line)}
+.btn:active{transform:translateY(3px);box-shadow:none}
+:focus-visible{outline:3px solid var(--river);outline-offset:2px}
+.msg{color:#b23c17;min-height:1.4em}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px}
+.kpi{background:var(--paper);border:2px solid var(--line);border-radius:14px;padding:16px}
+.kpi b{display:block;font-family:var(--pixel);font-size:30px;color:var(--wood-dark);font-weight:400}
+.kpi span{font-size:14px;color:var(--ink-soft)}
+.q{background:var(--paper);border:2px solid var(--line);border-radius:14px;padding:20px;margin-bottom:14px}
+.q h2{font-size:17px;margin:0 0 4px}
+.q .meta{font-size:13px;color:var(--ink-soft);margin-bottom:12px}
+.row{display:grid;grid-template-columns:minmax(120px,240px) 1fr 70px;gap:10px;align-items:center;margin:6px 0;font-size:14px}
+.track{height:14px;background:#f2e3cc;border-radius:7px;overflow:hidden}
+.track i{display:block;height:100%;background:var(--wood)}
+.row.top .track i{background:var(--brick)}
+.num{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink-soft)}
+.comments{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.comments li{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:15px}
+.comments time{display:block;font-size:12px;color:var(--ink-soft)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 22px}
+@media (max-width:640px){.kpis{grid-template-columns:1fr 1fr}.row{grid-template-columns:1fr 60px}.row .track{grid-column:1/-1;order:3}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1><img src="/assets/icon.png" alt="">설문 결과</h1>
+  <p class="sub">팀 전용 페이지예요. 열람 키를 넣으면 지금까지 모인 응답을 집계해요.</p>
+
+  <form class="gate" id="gate">
+    <label for="key" style="position:absolute;left:-9999px">열람 키</label>
+    <input id="key" type="password" placeholder="열람 키" autocomplete="current-password">
+    <button class="btn" type="submit">결과 보기</button>
+  </form>
+  <div class="msg" id="msg" role="alert"></div>
+  <div id="out"></div>
+</div>
+
+<script src="/questions.js"></script>
+<script>
+(function(){
+  var Q=window.SURVEY,out=document.getElementById('out'),msg=document.getElementById('msg'),keyIn=document.getElementById('key');
+  var rows=[];
+  try{var saved=sessionStorage.getItem('sudal_key');if(saved)keyIn.value=saved}catch(_){}
+  var fromHash=new URLSearchParams(location.hash.slice(1)).get('key');if(fromHash)keyIn.value=fromHash;
+
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  function pct(n,d){return d?Math.round(n/d*100):0}
+
+  function load(){
+    msg.textContent='불러오는 중…';
+    fetch('/api/results?key='+encodeURIComponent(keyIn.value),{cache:'no-store'})
+      .then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error(j.error||'불러오지 못했어요');return j})})
+      .then(function(j){rows=j.rows;msg.textContent='';try{sessionStorage.setItem('sudal_key',keyIn.value)}catch(_){};render()})
+      .catch(function(e){msg.textContent=e.message;out.innerHTML=''});
+  }
+  document.getElementById('gate').addEventListener('submit',function(e){e.preventDefault();load()});
+  if(keyIn.value)load();
+
+  function render(){
+    var n=rows.length;
+    if(!n){out.innerHTML='<div class="q">아직 응답이 없어요. 랜딩 페이지 링크를 공유해 보세요.</div>';return}
+    var intents=rows.map(function(r){return r.answers.intent}).filter(Boolean);
+    var avg=intents.length?(intents.reduce(function(a,b){return a+b},0)/intents.length).toFixed(1):'-';
+    var pos=intents.filter(function(v){return v>=4}).length;
+    var emails=rows.filter(function(r){return r.email}).length;
+    var h='<div class="kpis">'+
+      '<div class="kpi"><b>'+n+'</b><span>전체 응답</span></div>'+
+      '<div class="kpi"><b>'+avg+'</b><span>사용 의향 평균 (5점)</span></div>'+
+      '<div class="kpi"><b>'+pct(pos,intents.length)+'%</b><span>써볼 것 같다 (4~5점)</span></div>'+
+      '<div class="kpi"><b>'+emails+'</b><span>출시 알림 신청</span></div></div>';
+    h+='<div class="actions"><button class="btn plain" id="csv" type="button">CSV 내려받기</button><button class="btn plain" id="reload" type="button">새로고침</button></div>';
+
+    Q.forEach(function(q){
+      if(q.type==='text'){
+        var cs=rows.filter(function(r){return r.answers[q.id]});
+        h+='<div class="q"><h2>'+esc(q.title)+'</h2><div class="meta">'+cs.length+'개</div><ul class="comments">'+
+          (cs.length?cs.map(function(r){return '<li><time>'+new Date(r.submittedAt).toLocaleString('ko-KR')+'</time>'+esc(r.answers[q.id])+'</li>'}).join(''):'<li>아직 없어요</li>')+'</ul></div>';
+        return;
+      }
+      var opts=q.type==='scale'?['1','2','3','4','5']:q.options.slice();
+      var counts={};opts.forEach(function(o){counts[o]=0});
+      var answeredN=0;
+      rows.forEach(function(r){
+        var v=r.answers[q.id];if(v==null||(Array.isArray(v)&&!v.length))return;answeredN++;
+        (Array.isArray(v)?v:[String(v)]).forEach(function(x){if(!(x in counts)){counts[x]=0;opts.push(x)}counts[x]++});
+      });
+      var max=Math.max.apply(null,opts.map(function(o){return counts[o]}));
+      h+='<div class="q"><h2>'+esc(q.title)+'</h2><div class="meta">'+answeredN+'명 응답'+(q.type==='multi'?', 복수 선택이라 합이 100%를 넘을 수 있어요':'')+'</div>';
+      opts.forEach(function(o){
+        var c=counts[o],label=q.type==='scale'?o+'점'+(o==='1'?' ('+q.min+')':o==='5'?' ('+q.max+')':''):o;
+        h+='<div class="row'+(c&&c===max?' top':'')+'"><span>'+esc(label)+'</span><div class="track"><i style="width:'+pct(c,answeredN)+'%"></i></div><span class="num">'+c+' ('+pct(c,answeredN)+'%)</span></div>';
+      });
+      h+='</div>';
+    });
+    out.innerHTML=h;
+    document.getElementById('reload').onclick=load;
+    document.getElementById('csv').onclick=downloadCsv;
+  }
+
+  function downloadCsv(){
+    var head=['submittedAt'].concat(Q.map(function(q){return q.title}),['email','ref']);
+    var lines=[head];
+    rows.forEach(function(r){
+      lines.push([r.submittedAt].concat(Q.map(function(q){var v=r.answers[q.id];return Array.isArray(v)?v.join(' | '):(v==null?'':v)}),[r.email||'',r.ref||'']));
+    });
+    var csv='﻿'+lines.map(function(l){return l.map(function(c){c=String(c);return /[",\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c}).join(',')}).join('\n');
+    var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='sudal-survey-'+new Date().toISOString().slice(0,10)+'.csv';a.click();
+  }
+})();
+</script>
+</body>
+</html>
