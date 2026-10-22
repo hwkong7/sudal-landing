@@ -3,16 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>수달공방 — 공부한 만큼 수달이 집을 지어요</title>
-<meta name="description" content="공부를 시작하면 수달이 바탕화면에 나와 옆에서 같이 집을 지어요. 공부 시간은 집이 되고, 집은 마을이 되는 데스크톱 공부 타이머.">
-<meta property="og:title" content="수달공방 — 공부한 만큼 수달이 집을 지어요">
-<meta property="og:description" content="옆에서 같이 일하는 수달과 함께 공부하는 데스크톱 앱. 출시 전 2분 설문에 참여해 주세요.">
+<title>수달공방 — 공부 시간은 집으로, 완성한 집은 나만의 마을로</title>
+<meta name="description" content="공부를 시작하면 바탕화면 한쪽에서 수달이 같이 일해요. 공부한 시간만큼 수달이 집을 짓고, 집이 모이면 마을이 돼요. Windows·macOS 데스크톱 공부 타이머, 출시 준비 중.">
+<meta property="og:title" content="수달공방 — 공부 시간은 집으로, 완성한 집은 나만의 마을로">
+<meta property="og:description" content="바탕화면에서 같이 일하는 수달과 공부하는 데스크톱 앱. 출시 알림을 신청해 주세요.">
 <meta property="og:image" content="/assets/og.jpg">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#fbe9d6">
 <link rel="icon" type="image/png" href="/assets/favicon.png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-<style>@font-face{font-family:"Galmuri11";src:url(/assets/fonts/Galmuri11.woff2) format("woff2");font-weight:400;font-display:swap}@font-face{font-family:"Galmuri11";src:url(/assets/fonts/Galmuri11-Bold.woff2) format("woff2");font-weight:700;font-display:swap}</style>
+
+
+<link rel="stylesheet" href="/assets/fonts/jua/jua.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <style>
 :root{
@@ -26,9 +28,11 @@
   --river:#4f8fb3;
   --river-deep:#2f6a8c;
   --leaf:#6d8a57;
+  --roof-green:#5f9e8c;
+  --roof-red:#c95b45;
   --brick:#d0713a;
   --line:#e5cfb1;
-  --pixel:"Galmuri11","Galmuri9",monospace;
+  --round:"Jua","Pretendard",sans-serif;
   --body:"Pretendard",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
 }
 *{box-sizing:border-box}
@@ -36,38 +40,65 @@ html{scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 body{margin:0;background:var(--sky);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.7;-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:break-word}
 img{max-width:100%;display:block}
-.px{image-rendering:pixelated}
 a{color:var(--river-deep)}
 :focus-visible{outline:3px solid var(--river);outline-offset:3px;border-radius:4px}
 .wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
 /* header */
 .top{position:sticky;top:0;z-index:20;background:rgba(251,233,214,.92);backdrop-filter:blur(6px);border-bottom:2px solid transparent;transition:border-color .2s}
 .top.scrolled{border-bottom-color:var(--line)}
 .top .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-family:var(--pixel);font-size:20px}
-.brand img{width:36px;height:36px;border-radius:9px}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--pixel);font-size:16px;text-decoration:none;cursor:pointer;border:0;border-radius:10px;padding:13px 22px;line-height:1.2;transition:transform .12s, box-shadow .12s}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-family:var(--round);font-size:22px}
+.brand img{width:36px;height:36px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--round);font-size:17px;text-decoration:none;cursor:pointer;border:0;border-radius:10px;padding:13px 22px;line-height:1.2;transition:transform .12s, box-shadow .12s}
 .btn-go{background:var(--brick);color:#fff;box-shadow:0 4px 0 #9a4b20}
 .btn-go:hover{transform:translateY(-1px);box-shadow:0 5px 0 #9a4b20}
 .btn-go:active{transform:translateY(3px);box-shadow:0 1px 0 #9a4b20}
+.btn-go:disabled{opacity:.7;cursor:wait}
 .btn-plain{background:var(--paper);color:var(--ink);box-shadow:0 4px 0 var(--line);border:2px solid var(--line)}
 .btn-plain:active{transform:translateY(3px);box-shadow:0 1px 0 var(--line)}
-.top .btn{padding:9px 16px;font-size:14px}
+.top .btn{padding:9px 16px;font-size:15px}
 
 /* hero */
-.hero{padding:48px 0 0}
-.hero h1{font-family:var(--pixel);font-weight:700;font-size:clamp(34px,6vw,64px);line-height:1.25;margin:0;letter-spacing:-.01em;color:var(--wood-dark)}
-.hero-copy{display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:end}
-.hero-copy p{margin:0 0 6px;color:var(--ink-soft);font-size:18px;max-width:34em}
-.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}
-.hero-note{font-size:14px;color:var(--ink-soft);margin-top:14px}
-.scene{position:relative;margin-top:40px;aspect-ratio:1800/763;background:url(/assets/village_bg.webp) center/cover no-repeat;image-rendering:pixelated}
-.plot{position:absolute;transform:translate(-50%,-100%);width:10.5%}
-.plot img{width:100%;image-rendering:pixelated;transition:opacity .25s}
-.plot .stage{position:absolute;inset:auto 0 0 0;opacity:0}
+.hero{padding:44px 0 0}
+.hero-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:48px;align-items:end}
+.tag{display:inline-block;font-size:14px;font-weight:600;color:var(--river-deep);background:#e3eef4;border-radius:8px;padding:5px 11px;margin-bottom:18px}
+.hero h1{font-family:var(--round);font-weight:400;font-size:clamp(38px,6.2vw,68px);line-height:1.18;margin:0;letter-spacing:-.01em;color:var(--wood-dark)}
+.hero h1 .l2{color:var(--roof-red)}
+.hero h1 .l3{color:var(--roof-green)}
+.hero-copy p{margin:0 0 20px;color:var(--ink-soft);font-size:18px;max-width:30em}
+
+/* signup (shared) */
+.inline{display:flex;gap:8px}
+.inline input{flex:1;min-width:0}
+input[type=email],textarea{width:100%;font:inherit;font-size:16px;padding:13px 15px;border-radius:10px;border:2px solid var(--line);background:#fff;color:var(--ink)}
+input[type=email]:focus,textarea:focus{border-color:var(--river);outline:none}
+.consent{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--ink-soft);margin-top:12px;line-height:1.5}
+.consent input{margin:2px 0 0;width:18px;height:18px;flex:none;accent-color:var(--wood-dark)}
+.consent .more{background:none;border:0;padding:0;font:inherit;color:var(--river-deep);text-decoration:underline;cursor:pointer;margin-left:4px}
+.policy{font-size:13px;color:var(--ink-soft);background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-top:10px;line-height:1.6}
+.policy dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.policy dt{font-weight:600;color:var(--ink)}
+.policy dd{margin:0}
+.policy p{margin:8px 0 0}
+.promise{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:4px;font-size:14px;color:var(--ink-soft)}
+.promise li{display:flex;gap:8px;align-items:center}
+.promise li::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--leaf);flex:none}
+.form-msg{font-size:14px;color:#b23c17;min-height:1.4em;margin-top:8px}
+.done{display:flex;gap:14px;align-items:center;background:var(--paper);border:2px solid var(--line);border-radius:14px;padding:14px 16px}
+.done img{width:64px;flex:none}
+.done b{font-family:var(--round);font-weight:400;font-size:20px;color:var(--wood-dark);display:block}
+.done span{font-size:14px;color:var(--ink-soft)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
+/* scene */
+.scene{position:relative;margin-top:44px;aspect-ratio:1800/763;background:url(/assets/village_bg.webp) center/cover no-repeat;border-radius:18px 18px 0 0;overflow:hidden}
+.plot{position:absolute;transform:translate(-50%,-100%);width:10%}
+.plot img{width:100%}
+.plot .stage{position:absolute;left:0;right:0;bottom:0;opacity:0;transition:opacity .25s}
 .plot .stage.on{opacity:1}
-.worker{position:absolute;width:6.4%;transform:translate(-50%,-100%);image-rendering:pixelated}
+.worker{position:absolute;width:6.6%;transform:translate(-50%,-100%)}
 .worker img{width:100%}
 .worker .bob{animation:hammer .7s steps(2) infinite}
 @keyframes hammer{50%{transform:translateY(-6%) rotate(-3deg)}}
@@ -75,133 +106,163 @@ a{color:var(--river-deep)}
 @keyframes pop{0%{transform:scale(.85)}60%{transform:scale(1.06)}100%{transform:scale(1)}}
 @media (prefers-reduced-motion:reduce){.worker .bob,.pop{animation:none}}
 
-/* wooden status panel (mirrors the app's bottom bar) */
 .board{background:var(--wood);padding:14px;border-radius:0 0 18px 18px;box-shadow:inset 0 3px 0 rgba(255,255,255,.12)}
 .board-inner{display:grid;grid-template-columns:1.4fr 1fr;gap:14px}
 .card-paper{background:var(--paper);border-radius:12px;padding:16px 18px;border:2px solid #f3dfc2}
-.build-head{display:flex;justify-content:space-between;font-family:var(--pixel);font-size:16px}
+.build-head{display:flex;justify-content:space-between;font-family:var(--round);font-size:18px}
 .bar{height:16px;border-radius:8px;border:2px solid var(--wood);background:repeating-linear-gradient(45deg,#f6e7d0 0 6px,#efdcc0 6px 12px);overflow:hidden;margin:10px 0 12px}
 .bar i{display:block;height:100%;width:0;background:repeating-linear-gradient(45deg,#e0874d 0 6px,#d0713a 6px 12px);transition:width .6s ease}
 .chips{display:flex;justify-content:space-between;gap:4px}
-.chip{font-family:var(--pixel);font-size:12px;padding:4px 8px;border-radius:6px;background:#f2e3cc;color:var(--ink-soft);transition:background .2s,color .2s}
+.chip{font-family:var(--round);font-size:14px;padding:3px 9px;border-radius:6px;background:#f2e3cc;color:var(--ink-soft);transition:background .2s,color .2s}
 .chip.on{background:var(--brick);color:#fff}
 .timer{background:var(--wood-dark);border-radius:12px;padding:14px 18px;color:#f9e6c8;display:flex;flex-direction:column;justify-content:center}
-.timer small{font-family:var(--pixel);font-size:13px;opacity:.85}
-.timer b{font-family:var(--pixel);font-size:clamp(28px,4vw,40px);color:#ffd36b;letter-spacing:.06em;font-weight:400}
+.timer small{font-family:var(--round);font-size:15px;opacity:.85}
+.timer b{font-size:clamp(28px,4vw,40px);color:#ffd36b;letter-spacing:.04em;font-weight:700;font-variant-numeric:tabular-nums}
 
 /* sections */
 section.block{padding:110px 0}
 .paper-bg{background:var(--paper)}
-.h2{font-family:var(--pixel);font-weight:700;font-size:clamp(26px,3.6vw,38px);line-height:1.35;margin:0 0 18px;color:var(--wood-dark)}
+.h2{font-family:var(--round);font-weight:400;font-size:clamp(28px,3.8vw,42px);line-height:1.3;margin:0 0 16px;color:var(--wood-dark)}
 .lead{font-size:18px;color:var(--ink-soft);max-width:36em;margin:0}
 .split{display:grid;grid-template-columns:1fr 1.25fr;gap:56px;align-items:center}
-.split.rev{grid-template-columns:1.25fr 1fr}
-.split.rev .split-text{order:2}
 .desk{border-radius:14px;overflow:hidden;border:3px solid var(--wood-dark);background:#1e1e1e;box-shadow:0 18px 40px -18px rgba(75,43,23,.45)}
 .desk-bar{display:flex;gap:6px;padding:9px 12px;background:#2b2b2b}
 .desk-bar span{width:10px;height:10px;border-radius:50%;background:#555}
 .desk video{width:100%;display:block}
 .facts{margin:26px 0 0;padding:0;list-style:none;display:grid;gap:12px}
 .facts li{display:flex;gap:12px;align-items:flex-start}
-.facts li::before{content:"";flex:none;width:10px;height:10px;margin-top:9px;background:var(--leaf);box-shadow:2px 2px 0 var(--wood-dark)}
+.facts li::before{content:"";flex:none;width:10px;height:10px;margin-top:9px;border-radius:2px;background:var(--leaf)}
 
-/* states flow */
-.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:48px;position:relative}
+.flow{display:grid;grid-template-columns:repeat(4,1fr);margin-top:48px;position:relative}
 .flow::before{content:"";position:absolute;left:12%;right:12%;top:78px;border-top:3px dashed var(--line)}
 .state{text-align:center;padding:0 10px;position:relative}
 .state .pic{height:156px;display:flex;align-items:center;justify-content:center}
-.state .pic img{max-height:120px;width:auto;image-rendering:pixelated;background:var(--paper);padding:0 8px}
-.state h3{font-family:var(--pixel);font-size:19px;margin:10px 0 2px}
-.state .when{display:inline-block;font-family:var(--pixel);font-size:12px;color:var(--river-deep);background:#e3eef4;border-radius:6px;padding:3px 8px;margin-bottom:8px}
+.state .pic img{max-height:116px;width:auto;background:var(--paper);padding:0 8px}
+.state h3{font-family:var(--round);font-weight:400;font-size:22px;margin:10px 0 2px}
+.state .when{display:inline-block;font-size:13px;font-weight:600;color:var(--river-deep);background:#e3eef4;border-radius:6px;padding:3px 8px;margin-bottom:8px}
 .state p{margin:0;color:var(--ink-soft);font-size:15px;line-height:1.6}
 
-/* house stages */
 .stages{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:44px;align-items:end}
 .stg{text-align:center}
-.stg .pic{height:170px;display:flex;align-items:flex-end;justify-content:center;border-bottom:4px solid var(--sand)}
-.stg img{max-height:160px;width:auto;image-rendering:pixelated}
-.stg b{display:block;font-family:var(--pixel);font-size:16px;margin-top:12px;font-weight:400}
-.stg span{font-family:var(--pixel);font-size:13px;color:var(--brick)}
+.stg .pic{height:180px;display:flex;align-items:flex-end;justify-content:center;border-bottom:4px solid var(--sand);padding-bottom:6px}
+.stg img{max-height:166px;width:auto}
+.stg b{display:block;font-family:var(--round);font-weight:400;font-size:19px;margin-top:12px}
+.stg span{font-size:14px;font-weight:600;color:var(--brick)}
 .note{margin-top:28px;font-size:15px;color:var(--ink-soft)}
 
-.shots{display:grid;grid-template-columns:1.35fr 1fr;gap:22px;margin-top:44px}
+.shots{display:grid;grid-template-columns:1.45fr 1fr;gap:22px;margin-top:44px;align-items:start}
 .shot{margin:0}
-.shot img,.shot video{border-radius:14px;border:3px solid var(--wood);width:100%;background:var(--paper)}
+.shot img,.shot video{border-radius:14px;border:3px solid var(--wood);width:100%;background:#1e1e1e;display:block}
 .shot figcaption{font-size:15px;color:var(--ink-soft);margin-top:10px}
 
-/* survey */
-.survey-sec{background:var(--wood);padding:100px 0 110px;position:relative}
-.survey-sec::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.05) 0 2px,transparent 2px 46px);pointer-events:none}
-.survey-box{position:relative;max-width:760px;margin:0 auto;background:var(--paper);border-radius:20px;padding:44px clamp(20px,5vw,52px) 48px;border:3px solid var(--wood-dark);box-shadow:0 10px 0 var(--wood-dark)}
-.sign{position:absolute;top:-30px;left:50%;transform:translateX(-50%);background:#c98a55;color:#fff8ec;font-family:var(--pixel);font-size:20px;padding:10px 26px;border-radius:10px;border:3px solid var(--wood-dark);white-space:nowrap}
-.survey-intro{display:flex;gap:18px;align-items:center;margin:8px 0 30px}
-.survey-intro img{width:84px;flex:none;image-rendering:pixelated}
-.survey-intro p{margin:0;color:var(--ink-soft)}
-.progress{position:sticky;top:64px;z-index:5;background:var(--paper);padding:10px 0 12px;margin:0 0 6px;border-bottom:2px dashed var(--line)}
-.progress-row{display:flex;justify-content:space-between;font-family:var(--pixel);font-size:13px;color:var(--ink-soft);margin-bottom:6px}
-.progress .bar{margin:0;height:14px}
-fieldset{border:0;margin:0;padding:26px 0;border-bottom:1px solid var(--line)}
-legend{float:left;width:100%;font-weight:700;font-size:18px;padding:0;margin:0 0 4px}
-legend .req{margin-left:6px}
-legend + *{clear:both}
-legend .req{color:var(--brick);font-size:14px;font-weight:600}
-.hint{font-size:14px;color:var(--ink-soft);margin:0 0 12px}
-.opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+/* privacy */
+.privacy{display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:center;background:var(--paper);border:2px solid var(--line);border-radius:22px;padding:40px clamp(22px,4vw,48px)}
+.privacy img{width:160px}
+.privacy ul{list-style:none;padding:0;margin:20px 0 0;display:grid;gap:14px}
+.privacy li{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start}
+.privacy li svg{margin-top:3px}
+.privacy li b{display:block}
+.privacy li span{color:var(--ink-soft);font-size:16px}
+
+/* roadmap */
+.road{position:relative;margin-top:52px;display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+.road::before{content:"";position:absolute;left:4%;right:4%;top:118px;height:14px;border-radius:7px;background:repeating-linear-gradient(90deg,#e8c99a 0 18px,#efd6ae 18px 36px)}
+.ver{position:relative;display:flex;flex-direction:column}
+.ver .pic{height:126px;display:flex;align-items:flex-end;justify-content:center;position:relative;z-index:1}
+.ver .pic img{max-height:118px;width:auto}
+.ver .card{margin-top:22px;background:var(--paper);border:2px solid var(--line);border-radius:14px;padding:16px 16px 18px;flex:1}
+.ver.now .card{border-color:var(--brick);box-shadow:0 4px 0 #e7b48f}
+.ver .v{display:flex;align-items:center;gap:8px;font-family:var(--round);font-size:15px;color:var(--ink-soft)}
+.ver .v em{font-style:normal;font-size:12px;font-family:var(--body);font-weight:700;color:#fff;background:var(--brick);border-radius:6px;padding:2px 7px}
+.ver h3{font-family:var(--round);font-weight:400;font-size:21px;margin:2px 0 10px;color:var(--wood-dark)}
+.ver ul{margin:0;padding:0 0 0 18px;font-size:15px;color:var(--ink-soft);line-height:1.6}
+.ver li+li{margin-top:4px}
+.road-note{margin-top:26px;font-size:15px;color:var(--ink-soft)}
+
+/* launch section */
+.launch{background:var(--wood);padding:104px 0 110px;position:relative}
+.launch::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.05) 0 2px,transparent 2px 46px);pointer-events:none}
+.launch-box{position:relative;max-width:640px;margin:0 auto;background:var(--paper);border-radius:20px;padding:52px clamp(20px,5vw,48px) 40px;border:3px solid var(--wood-dark);box-shadow:0 10px 0 var(--wood-dark)}
+.sign{position:absolute;top:-28px;left:50%;transform:translateX(-50%);background:#c98a55;color:#fff8ec;font-family:var(--round);font-size:20px;padding:8px 24px;border-radius:10px;border:3px solid var(--wood-dark);white-space:nowrap}
+.launch-box h2{text-align:center;margin-bottom:10px}
+.launch-box .lead{text-align:center;margin:0 auto 28px;font-size:16px}
+.field{margin-bottom:20px}
+.field > label,.field > .lbl{display:block;font-weight:700;font-size:15px;margin-bottom:8px}
+.field > label.consent,.field > label.check{display:flex;font-weight:400;margin-bottom:0}
+.field > label.consent{font-size:14px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
 .opt{position:relative}
 .opt input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
-.opt span{display:inline-block;padding:9px 15px;border-radius:10px;background:#fff;border:2px solid var(--line);font-size:15px;line-height:1.4;cursor:pointer;transition:background .12s,border-color .12s,color .12s}
+.opt span{display:inline-block;padding:10px 18px;border-radius:10px;background:#fff;border:2px solid var(--line);font-size:15px;line-height:1.4;cursor:pointer;transition:background .12s,border-color .12s,color .12s}
 .opt input:checked + span{background:var(--wood-dark);border-color:var(--wood-dark);color:#fff}
 .opt input:focus-visible + span{outline:3px solid var(--river);outline-offset:2px}
 .opt input:disabled + span{opacity:.45;cursor:not-allowed}
-.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px}
-.scale .opt span{display:block;text-align:center;font-family:var(--pixel);font-size:18px;padding:12px 0}
-.scale-labels{display:flex;justify-content:space-between;font-size:13px;color:var(--ink-soft);margin-top:6px;gap:12px}
-.scale-labels span:last-child{text-align:right}
-textarea,input[type=email]{width:100%;font:inherit;font-size:16px;padding:12px 14px;border-radius:10px;border:2px solid var(--line);background:#fff;color:var(--ink);margin-top:10px}
-textarea{min-height:110px;resize:vertical}
-textarea:focus,input[type=email]:focus{border-color:var(--river);outline:none}
-.consent{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--ink-soft);margin-top:12px}
-.consent input{margin-top:5px;width:18px;height:18px;accent-color:var(--wood-dark)}
-.err{color:#b23c17;font-size:14px;margin-top:8px;display:none}
-fieldset.invalid .err{display:block}
-fieldset.invalid legend{color:#b23c17}
-.submit-row{margin-top:30px;display:flex;flex-direction:column;align-items:center;gap:12px}
-.submit-row .btn{font-size:18px;padding:16px 40px}
-.form-msg{font-size:15px;color:#b23c17;min-height:1.5em;text-align:center}
-.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
-.thanks{text-align:center;padding:20px 0 6px}
-.thanks img{width:140px;margin:0 auto 12px;image-rendering:pixelated}
-.thanks h3{font-family:var(--pixel);font-size:26px;margin:0 0 8px;color:var(--wood-dark)}
-.thanks p{color:var(--ink-soft);margin:0 auto;max-width:28em}
-.thanks .houses{display:flex;justify-content:center;align-items:flex-end;gap:6px;margin:22px 0 4px}
-.thanks .houses img{width:64px;margin:0}
+.check{display:flex;gap:10px;align-items:center;font-size:15px;cursor:pointer}
+.check input{width:18px;height:18px;accent-color:var(--wood-dark);margin:0}
+.launch-box .submit{width:100%;font-size:19px;padding:16px;margin-top:8px}
+.field.invalid input[type=email],.field.invalid .opt span{border-color:#d0613a}
+.err{display:none;color:#b23c17;font-size:13px;margin-top:6px}
+.invalid > .err,.invalid .err{display:block}
+
+/* collapsible feedback */
+.fb{margin-top:30px;border-top:2px dashed var(--line);padding-top:22px}
+.fb summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;font-family:var(--round);font-size:19px;color:var(--wood-dark)}
+.fb summary::-webkit-details-marker{display:none}
+.fb summary small{font-family:var(--body);font-size:13px;color:var(--ink-soft);font-weight:500}
+.fb summary .arrow{flex:none;width:30px;height:30px;border-radius:8px;background:#f2e3cc;display:grid;place-items:center;transition:transform .2s}
+.fb[open] summary .arrow{transform:rotate(180deg)}
+.fb-body{margin-top:18px}
+.q{padding:16px 0;border-bottom:1px solid var(--line)}
+.q:last-of-type{border-bottom:0}
+.q .qt{font-weight:700;font-size:16px;margin-bottom:10px}
+.q .qt small{font-weight:500;color:var(--ink-soft);font-size:13px;margin-left:6px}
+.q .opt span{padding:8px 13px;font-size:14px}
+.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.scale .opt span{display:block;text-align:center;font-family:var(--round);font-size:18px;padding:9px 0}
+.scale-labels{display:flex;justify-content:space-between;font-size:12px;color:var(--ink-soft);margin-top:6px}
+.fb .btn{margin-top:16px}
+textarea{min-height:90px;resize:vertical}
 
 footer{background:var(--wood-dark);color:#e9d3b5;padding:34px 0;font-size:14px}
 footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
-footer .brand{color:#fff3df;font-size:16px}
+footer .brand{color:#fff3df;font-size:18px}
 footer .brand img{width:28px;height:28px}
 
+@media (max-width:900px){
+  .road{grid-template-columns:1fr;gap:0}
+  .road::before{left:58px;right:auto;top:20px;bottom:20px;width:12px;height:auto;background:repeating-linear-gradient(180deg,#e8c99a 0 18px,#efd6ae 18px 36px)}
+  .ver{display:grid;grid-template-columns:128px 1fr;gap:14px;padding:10px 0}
+  .ver .pic{height:auto;align-items:center}
+  .ver .pic img{max-height:96px}
+  .ver .card{margin-top:0}
+}
 @media (max-width:860px){
-  .hero{padding-top:32px}
-  .hero-copy,.split,.split.rev,.shots{grid-template-columns:1fr;gap:28px}
-  .split.rev .split-text{order:0}
+  .hero{padding-top:30px}
+  .hero-grid,.split,.shots{grid-template-columns:1fr;gap:28px}
   .board-inner{grid-template-columns:1fr}
   .flow{grid-template-columns:1fr 1fr;row-gap:36px}
   .flow::before{display:none}
   .stages{grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
-  .stg .pic{height:96px}
-  .stg img{max-height:90px}
-  .stg b{font-size:13px}
+  .stg .pic{height:100px}
+  .stg img{max-height:92px}
+  .stg b{font-size:15px}
   section.block{padding:76px 0}
-  .chip{font-size:11px;padding:3px 5px}
+  .chip{font-size:12px;padding:2px 6px}
+  .privacy{grid-template-columns:1fr;gap:16px;text-align:left}
+  .privacy img{width:110px}
+  .scene{border-radius:14px 14px 0 0}
 }
 @media (max-width:520px){
   body{font-size:16px}
   .wrap{padding:0 16px}
-  .top .btn{display:none}
-  .scale .opt span{font-size:16px;padding:10px 0}
-  .survey-intro img{width:64px}
-  .sign{font-size:17px;padding:8px 18px}
+  .tag{font-size:12.5px;padding:4px 9px}
+  .top .btn{padding:8px 12px;font-size:14px}
+  .inline{flex-direction:column}
+  .inline .btn{width:100%}
+  .ver{grid-template-columns:96px 1fr}
+  .road::before{left:42px}
+  .ver .pic img{max-height:76px}
+  .sign{font-size:17px;padding:7px 18px}
 }
 </style>
 </head>
@@ -209,42 +270,60 @@ footer .brand img{width:28px;height:28px}
 
 <header class="top" id="top">
   <div class="wrap">
-    <a class="brand" href="#"><img src="/assets/icon.png" alt="" class="px">수달공방</a>
-    <a class="btn btn-go" href="#survey">설문 참여하기</a>
+    <a class="brand" href="#"><img src="/assets/icon.png" alt="">수달공방</a>
+    <a class="btn btn-go" href="#launch">출시 알림 받기</a>
   </div>
 </header>
 
 <main>
   <section class="hero">
-    <div class="wrap hero-copy">
-      <h1>공부한 시간만큼<br>수달이 집을 지어요</h1>
+    <div class="wrap hero-grid">
       <div>
-        <p>공부를 시작하면 수달이 바탕화면에 나와 옆에서 같이 일해요. 타이머는 신경 쓰지 않아도 돼요. 쌓인 시간은 집이 되고, 집은 마을이 돼요.</p>
-        <div class="hero-actions">
-          <a class="btn btn-go" href="#survey">2분 설문 참여하기</a>
-          <a class="btn btn-plain" href="#together">어떻게 쓰는지 보기</a>
-        </div>
-        <div class="hero-note">Windows, macOS용 데스크톱 앱이에요. 지금은 출시를 준비하고 있어요.</div>
+        <span class="tag">Windows · macOS 데스크톱 공부 타이머 · 출시 준비 중</span>
+        <h1>공부 시간은 집으로,<br><span class="l2">완성한 집은</span><br><span class="l3">나만의 마을로.</span></h1>
+      </div>
+      <div class="hero-copy">
+        <p>공부를 시작하면 바탕화면 한쪽에서 수달이 같이 일해요. 내가 공부한 시간만큼 수달이 집을 짓고, 집이 모이면 마을이 돼요.</p>
+        <form class="signup" data-form="hero" novalidate>
+          <div class="field">
+            <label class="sr" for="heroEmail">이메일</label>
+            <div class="inline">
+              <input type="email" id="heroEmail" name="email" placeholder="이메일 주소" autocomplete="email" required>
+              <button class="btn btn-go" type="submit">출시 알림 받기</button>
+            </div>
+            <div class="err">이메일 주소를 확인해 주세요.</div>
+          </div>
+          <div class="field consent-field" style="margin-bottom:0">
+            <label class="consent"><input type="checkbox" name="consent" required><span>(필수) 개인정보 수집·이용에 동의합니다<button type="button" class="more" aria-expanded="false">자세히 보기</button></span></label>
+            <div class="err">알림을 받으려면 동의가 필요해요.</div>
+          </div>
+          <div class="hp" aria-hidden="true"><label>웹사이트<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+          <div class="form-msg" role="alert"></div>
+        </form>
+        <ul class="promise">
+          <li>출시하는 날, 이 메일로 가장 먼저 알려드려요</li>
+          <li>알림 말고 다른 메일은 보내지 않아요</li>
+        </ul>
       </div>
     </div>
 
     <div class="wrap">
-      <div class="scene" id="scene" role="img" aria-label="수달이 마을의 빈 땅에 집을 짓고 있는 장면">
-        <div class="plot" style="left:23%;top:52%"><img class="px" src="/assets/house_4.png" alt=""></div>
-        <div class="plot" id="building" style="left:42%;top:52%">
+      <div class="scene" role="img" aria-label="수달이 마을의 빈 땅에 집을 짓고 있는 장면">
+        <div class="plot" style="left:23%;top:53%"><img src="/assets/house_4_red.png" alt=""></div>
+        <div class="plot" id="building" style="left:41.5%;top:53%">
           <img class="stage on" src="/assets/house_0.png" alt="">
           <img class="stage" src="/assets/house_1.png" alt="">
           <img class="stage" src="/assets/house_2.png" alt="">
-          <img class="stage" src="/assets/house_3.png" alt="">
-          <img class="stage" src="/assets/house_4.png" alt="">
-          <img src="/assets/house_4.png" alt="" style="visibility:hidden">
+          <img class="stage" src="/assets/house_3_green.png" alt="">
+          <img class="stage" src="/assets/house_4_green.png" alt="">
+          <img src="/assets/house_4_green.png" alt="" style="visibility:hidden">
         </div>
-        <div class="worker" style="left:50.5%;top:53%"><img class="bob px" id="workerImg" src="/assets/otter_axe.png" alt=""></div>
+        <div class="worker" style="left:50.5%;top:54%"><img class="bob" id="workerImg" src="/assets/otter_axe.png" alt=""></div>
       </div>
-      <div class="board" aria-live="polite">
+      <div class="board" aria-hidden="true">
         <div class="board-inner">
           <div class="card-paper">
-            <div class="build-head"><span>2번째 집 짓는 중</span><span id="pct">0%</span></div>
+            <div class="build-head"><span>1번째 마을 · 2번째 집 짓는 중</span><span id="pct">0%</span></div>
             <div class="bar"><i id="barFill"></i></div>
             <div class="chips" id="chips">
               <span class="chip on">터 다지기</span><span class="chip">뼈대</span><span class="chip">벽</span><span class="chip">지붕</span><span class="chip">완성</span>
@@ -261,13 +340,13 @@ footer .brand img{width:28px;height:28px}
 
   <section class="block" id="together">
     <div class="wrap split">
-      <div class="split-text">
+      <div>
         <h2 class="h2">말 걸지 않고,<br>옆에만 있어 줘요</h2>
         <p class="lead">친구랑 같이 공부하면 집중이 잘 되는 건 대화 때문이 아니라 누군가 옆에서 같이 하고 있어서예요. 수달공방은 그 자리를 수달이 채워요.</p>
         <ul class="facts">
           <li>공부 시작을 누르면 수달이 바탕화면 한쪽에 나와 나무를 나르고 망치질을 해요.</li>
           <li>인강, 유튜브, 코딩처럼 화면을 보며 공부해도 다른 창을 가리지 않아요.</li>
-          <li>수달 크기는 작게, 보통, 크게 중에서 고르고, 더블클릭하면 작게 접혀요.</li>
+          <li>수달 크기와 처음 나올 자리는 설정에서 고르고, 더블클릭하면 작게 접혀요.</li>
         </ul>
       </div>
       <div class="desk">
@@ -280,13 +359,13 @@ footer .brand img{width:28px;height:28px}
   <section class="block paper-bg">
     <div class="wrap">
       <h2 class="h2">타이머를 안 눌러도<br>수달이 알아서 알아채요</h2>
-      <p class="lead">키보드와 마우스 입력으로 공부 중인지 판단해요. 자리를 비우면 감시하는 대신 수달이 꾸벅꾸벅 졸다가 잠들어요.</p>
+      <p class="lead">키보드와 마우스를 쓰는지로 공부 중인지 판단해요. 자리를 비우면 감시하는 대신 수달이 꾸벅꾸벅 졸다가 잠들어요.</p>
       <div class="flow">
         <div class="state">
           <div class="pic"><img src="/assets/otter_axe.png" alt="망치질하는 수달"></div>
           <h3>작업</h3>
           <span class="when">공부 중</span>
-          <p>나무를 들고 망치질하며 집을 지어요. 공부 시간이 쌓여요.</p>
+          <p>나무를 나르고 망치질하며 집을 지어요. 공부 시간이 쌓여요.</p>
         </div>
         <div class="state">
           <div class="pic"><img src="/assets/otter_drowsy.png" alt="하품하는 수달"></div>
@@ -318,73 +397,149 @@ footer .brand img{width:28px;height:28px}
         <div class="stg"><div class="pic"><img src="/assets/house_0.png" alt=""></div><b>터 다지기</b><span>0%</span></div>
         <div class="stg"><div class="pic"><img src="/assets/house_1.png" alt=""></div><b>뼈대</b><span>20%</span></div>
         <div class="stg"><div class="pic"><img src="/assets/house_2.png" alt=""></div><b>벽</b><span>45%</span></div>
-        <div class="stg"><div class="pic"><img src="/assets/house_3.png" alt=""></div><b>지붕</b><span>70%</span></div>
-        <div class="stg"><div class="pic"><img src="/assets/house_4.png" alt=""></div><b>완성</b><span>100%</span></div>
+        <div class="stg"><div class="pic"><img src="/assets/house_3_red.png" alt=""></div><b>지붕</b><span>70%</span></div>
+        <div class="stg"><div class="pic"><img src="/assets/house_4_red.png" alt=""></div><b>완성</b><span>100%</span></div>
       </div>
-      <p class="note">집 한 채에 걸리는 시간은 설정에서 5분부터 240분까지 바꿀 수 있어요.</p>
+      <p class="note">지붕 색은 집마다 빨강, 초록으로 달라져요. 집 한 채에 걸리는 시간은 설정에서 바꿀 수 있어요.</p>
     </div>
   </section>
 
   <section class="block paper-bg">
     <div class="wrap">
       <h2 class="h2">앱을 꺼도 마을은 남아요</h2>
-      <p class="lead">완성한 집은 마을에 하나씩 모여요. 다음에 켜면 짓던 집부터 이어서 짓고, 날마다 얼마나 공부했는지는 달력에 남아요.</p>
+      <p class="lead">완성한 집은 마을에 하나씩 모이고, 여섯 채가 차면 다음 마을이 열려요. 다시 켜면 짓던 집부터 이어서 짓고, 날마다 얼마나 공부했는지는 달력에 남아요.</p>
       <div class="shots">
         <figure class="shot">
-          <video src="/assets/village.mp4" poster="/assets/village_poster.jpg" autoplay muted loop playsinline aria-label="공부 시간에 따라 마을에 집이 지어지는 메인 화면"></video>
-          <figcaption>메인 화면. 공부하는 동안 집이 단계별로 올라가요.</figcaption>
+          <video src="/assets/village2.mp4" poster="/assets/village2_poster.jpg" autoplay muted loop playsinline aria-label="공부 시간에 따라 마을에 빨간 지붕과 초록 지붕 집이 지어지는 화면"></video>
+          <figcaption>공부하는 동안 마을에 집이 하나씩 올라가요. 오른쪽은 바탕화면에서 같이 일하는 수달이에요.</figcaption>
         </figure>
         <figure class="shot">
-          <img src="/assets/shot_record.webp" alt="월별 공부 시간 달력 화면" loading="lazy">
+          <img src="/assets/shot_record.webp" alt="월별 공부 시간 달력 화면">
           <figcaption>공부 기록. 날짜를 누르면 그날 공부한 세션이 보여요.</figcaption>
         </figure>
       </div>
     </div>
   </section>
 
-  <section class="survey-sec" id="survey">
+  <section class="block">
     <div class="wrap">
-      <div class="survey-box">
-        <div class="sign">수달공방 설문</div>
+      <div class="privacy">
+        <img src="/assets/otter_peek.png" alt="">
+        <div>
+          <h2 class="h2" style="margin-bottom:4px">수달은 공부 내용을 보지 않아요</h2>
+          <ul>
+            <li>
+              <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><rect x="1" y="5" width="20" height="13" rx="3" fill="none" stroke="#6d8a57" stroke-width="2"/><path d="M5 9h2M9 9h2M13 9h2M7 13h8" stroke="#6d8a57" stroke-width="2" stroke-linecap="round"/></svg>
+              <div><b>키보드와 마우스를 쓰고 있는지만 확인해요.</b><span>무엇을 입력했는지는 보지 않아요.</span></div>
+            </li>
+            <li>
+              <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="9" fill="none" stroke="#6d8a57" stroke-width="2"/><path d="M11 6v5l3 2" fill="none" stroke="#6d8a57" stroke-width="2" stroke-linecap="round"/></svg>
+              <div><b>영상을 보거나 종이책을 읽을 때는 휴식으로 바뀔 수 있어요.</b><span>입력이 없기 때문이에요. 졸림과 휴식까지 걸리는 시간은 설정에서 늘릴 수 있어요.</span></div>
+            </li>
+            <li>
+              <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><path d="M3 9l8-6 8 6v10H3z" fill="none" stroke="#6d8a57" stroke-width="2" stroke-linejoin="round"/><path d="M9 19v-5h4v5" fill="none" stroke="#6d8a57" stroke-width="2"/></svg>
+              <div><b>공부 기록은 내 컴퓨터에 저장돼요.</b><span>계정도, 서버로 보내는 기록도 없어요.</span></div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
 
-        <form id="form" novalidate>
-          <div class="survey-intro">
-            <img src="/assets/otter_smile.png" alt="">
-            <p>아직 만들고 있는 앱이에요. 써 보고 싶은지, 무엇이 더 있으면 좋을지 알려 주시면 다음 버전에 반영할게요. 2분이면 끝나요.</p>
-          </div>
-
-          <div class="progress" aria-hidden="true">
-            <div class="progress-row"><span>집 짓는 중</span><span id="fpct">0%</span></div>
-            <div class="bar"><i id="fbar"></i></div>
-          </div>
-
-          <div id="questions"></div>
-
-          <fieldset>
-            <legend>출시 알림 받기 <span class="req" style="color:var(--ink-soft)">선택</span></legend>
-            <p class="hint">출시되면 이메일로 한 번 알려 드려요.</p>
-            <input type="email" name="email" id="email" placeholder="you@example.com" autocomplete="email">
-            <label class="consent"><input type="checkbox" id="consent"> 출시 알림을 위해 이메일을 수집하는 것에 동의해요. 출시 안내 후 삭제해요.</label>
-            <div class="err" id="emailErr">이메일을 남기려면 동의에 체크해 주세요.</div>
-          </fieldset>
-
-          <div class="hp" aria-hidden="true"><label>웹사이트<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
-
-          <div class="submit-row">
-            <button class="btn btn-go" type="submit" id="submitBtn">응답 보내기</button>
-            <div class="form-msg" id="formMsg" role="alert"></div>
-          </div>
-        </form>
-
-        <div class="thanks" id="thanks" hidden tabindex="-1">
-          <img src="/assets/otter_smile.png" alt="">
-          <h3>응답을 받았어요</h3>
-          <p>덕분에 수달이 집 한 채를 더 지었어요. 주변에 혼자 공부하는 친구가 있다면 이 페이지를 공유해 주세요.</p>
-          <div class="houses"><img src="/assets/house_4.png" alt=""><img src="/assets/house_4.png" alt=""><img class="pop" src="/assets/house_4.png" alt=""></div>
-          <div class="hero-actions" style="justify-content:center">
-            <button class="btn btn-plain" type="button" id="shareBtn">링크 복사하기</button>
+  <section class="block paper-bg" id="roadmap">
+    <div class="wrap">
+      <h2 class="h2">앞으로 지을 것들</h2>
+      <p class="lead">마을은 계속 넓어져요. 첫 버전은 집 짓기와 공부 기록부터 시작해요.</p>
+      <div class="road">
+        <div class="ver now">
+          <div class="pic"><img src="/assets/house_4_red.png" alt=""></div>
+          <div class="card">
+            <div class="v">V1 <em>첫 버전</em></div>
+            <h3>집 짓기와 공부 기록</h3>
+            <ul><li>바탕화면 수달과 자동 측정</li><li>집 짓기와 마을</li><li>월별 공부 기록 달력</li></ul>
           </div>
         </div>
+        <div class="ver">
+          <div class="pic"><img src="/assets/house_3_green.png" alt=""></div>
+          <div class="card">
+            <div class="v">V2</div>
+            <h3>마을 둘러보기</h3>
+            <ul><li>마을 확대·축소, 화면 이동</li><li>집마다 공부 기록 연결</li><li>주간·월간 리포트</li></ul>
+          </div>
+        </div>
+        <div class="ver">
+          <div class="pic"><img src="/assets/house_2.png" alt=""></div>
+          <div class="card">
+            <div class="v">V3</div>
+            <h3>기록 남기고 공유</h3>
+            <ul><li>마을과 공부 시간 인증 사진</li><li>스토리·피드 비율로 저장</li><li>과목과 메모 남기기</li></ul>
+          </div>
+        </div>
+        <div class="ver">
+          <div class="pic"><img src="/assets/house_1.png" alt=""></div>
+          <div class="card">
+            <div class="v">V4</div>
+            <h3>꾸미기와 상점</h3>
+            <ul><li>공부 시간으로 모으는 재화</li><li>집과 수달 꾸미기 아이템</li></ul>
+          </div>
+        </div>
+        <div class="ver">
+          <div class="pic"><img src="/assets/house_0.png" alt=""></div>
+          <div class="card">
+            <div class="v">V5</div>
+            <h3>함께 공부</h3>
+            <ul><li>친구 수달과 같이 공부</li><li>친구 마을 놀러 가기</li><li>공부 시간을 모아 공동 건물 짓기</li></ul>
+          </div>
+        </div>
+      </div>
+      <p class="road-note">다음 기능의 순서는 신청해 주신 분들의 의견을 듣고 정해요.</p>
+    </div>
+  </section>
+
+  <section class="launch" id="launch">
+    <div class="wrap">
+      <div class="launch-box">
+        <div class="sign">출시 준비 중</div>
+        <h2 class="h2">출시되면<br>가장 먼저 알려드릴게요</h2>
+        <p class="lead">수달공방은 아직 출시 전인 Windows · macOS 데스크톱 앱이에요. 지금 신청하면 출시하는 날 메일로 알려드려요. 앱을 내려받거나 결제하는 절차는 없어요.</p>
+
+        <form class="signup" data-form="launch" novalidate>
+          <div class="field">
+            <label for="launchEmail">이메일</label>
+            <input type="email" id="launchEmail" name="email" placeholder="you@example.com" autocomplete="email" required>
+            <div class="err">이메일 주소를 확인해 주세요.</div>
+          </div>
+          <div class="field">
+            <span class="lbl" id="osLbl">사용하는 OS</span>
+            <div class="opts" role="group" aria-labelledby="osLbl">
+              <label class="opt"><input type="checkbox" name="os" value="Windows"><span>Windows</span></label>
+              <label class="opt"><input type="checkbox" name="os" value="macOS"><span>macOS</span></label>
+            </div>
+          </div>
+          <div class="field">
+            <label class="check"><input type="checkbox" name="beta"> 출시 전 테스트에 참여하고 싶어요 <span style="color:var(--ink-soft);font-size:13px">(선택)</span></label>
+          </div>
+          <div class="field consent-field">
+            <label class="consent"><input type="checkbox" name="consent" required><span>(필수) 개인정보 수집·이용에 동의합니다<button type="button" class="more" aria-expanded="false">자세히 보기</button></span></label>
+            <div class="err">알림을 받으려면 동의가 필요해요.</div>
+          </div>
+          <div class="hp" aria-hidden="true"><label>웹사이트<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+          <button class="btn btn-go submit" type="submit">출시 알림 신청하기</button>
+          <div class="form-msg" role="alert"></div>
+        </form>
+
+        <details class="fb" id="feedback">
+          <summary>
+            <span>의견도 들려주실래요? <small>선택, 1분이면 돼요</small></span>
+            <span class="arrow" aria-hidden="true"><svg width="12" height="8" viewBox="0 0 12 8"><path d="M1 1l5 5 5-5" fill="none" stroke="#4b2b17" stroke-width="2" stroke-linecap="round"/></svg></span>
+          </summary>
+          <form class="fb-body" id="fbForm" novalidate>
+            <div id="questions"></div>
+            <div class="hp" aria-hidden="true"><label>웹사이트<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+            <button class="btn btn-plain" type="submit">의견 보내기</button>
+            <div class="form-msg" role="alert"></div>
+          </form>
+        </details>
       </div>
     </div>
   </section>
@@ -392,29 +547,37 @@ footer .brand img{width:28px;height:28px}
 
 <footer>
   <div class="wrap">
-    <span class="brand"><img src="/assets/icon.png" alt="" class="px">수달공방</span>
+    <span class="brand"><img src="/assets/icon.png" alt="">수달공방</span>
     <span>혼자 공부하는 사람 옆에 수달 한 마리. 2026 수달공방 팀</span>
   </div>
 </footer>
 
+<template id="policyTpl">
+  <div class="policy">
+    <dl>
+      <dt>수집 항목</dt><dd>이메일, 사용하는 OS, 테스트 참여 희망 여부</dd>
+      <dt>이용 목적</dt><dd>출시 알림, 테스트 참여 안내</dd>
+      <dt>보관 기간</dt><dd>출시 알림을 보낸 뒤 바로 삭제해요</dd>
+    </dl>
+    <p>동의하지 않을 수 있지만, 그러면 출시 알림을 받을 수 없어요.</p>
+  </div>
+</template>
+
 <script src="/questions.js"></script>
 <script>
 (function(){
-  // header border on scroll
   var top=document.getElementById('top');
   addEventListener('scroll',function(){top.classList.toggle('scrolled',scrollY>8)},{passive:true});
-
-  // hero: build a house through its stages, mirroring the app
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var ref=new URLSearchParams(location.search).get('ref')||'';
+
+  /* hero: build a house through its stages */
   var stages=[].slice.call(document.querySelectorAll('#building .stage'));
   var chips=[].slice.call(document.querySelectorAll('#chips .chip'));
-  var pctEl=document.getElementById('pct'),fill=document.getElementById('barFill'),clock=document.getElementById('clock');
-  var worker=document.getElementById('workerImg');
-  var marks=[0,20,45,70,100];
-  var pct=0, secs=0;
+  var pctEl=document.getElementById('pct'),fill=document.getElementById('barFill'),clock=document.getElementById('clock'),worker=document.getElementById('workerImg');
+  var marks=[0,20,45,70,100],pct=0,secs=0,last=-1;
   function stageFor(p){var s=0;for(var i=0;i<marks.length;i++){if(p>=marks[i])s=i}return s}
-  function fmt(n){return String(n).padStart(2,'0')}
-  var last=-1;
+  function two(n){return String(n).padStart(2,'0')}
   function render(){
     var s=stageFor(pct);
     if(s!==last){
@@ -423,116 +586,100 @@ footer .brand img{width:28px;height:28px}
       if(last!==-1&&!reduce){stages[s].classList.remove('pop');void stages[s].offsetWidth;stages[s].classList.add('pop')}
       last=s;
     }
-    worker.src = s===4 ? '/assets/otter_smile.png' : (pct%20<10?'/assets/otter_axe.png':'/assets/otter_log.png');
-    pctEl.textContent=Math.floor(pct)+'%';
-    fill.style.width=pct+'%';
-    var t=Math.round(secs);
-    clock.textContent=fmt(Math.floor(t/3600))+':'+fmt(Math.floor(t/60)%60)+':'+fmt(t%60);
+    worker.src=s===4?'/assets/otter_smile.png':(pct%20<10?'/assets/otter_axe.png':'/assets/otter_log.png');
+    pctEl.textContent=Math.floor(pct)+'%';fill.style.width=pct+'%';
+    var t=Math.round(secs);clock.textContent=two(Math.floor(t/3600))+':'+two(Math.floor(t/60)%60)+':'+two(t%60);
   }
   if(reduce){pct=45;secs=810;render()}
-  else{
-    var hold=0;
-    setInterval(function(){
-      if(pct>=100){ if(++hold>14){pct=0;hold=0;} render(); return; }
-      pct=Math.min(100,pct+1); secs+=18; render();
-    },120);
-    render();
+  else{var hold=0;setInterval(function(){if(pct>=100){if(++hold>14){pct=0;hold=0}render();return}pct=Math.min(100,pct+1);secs+=18;render()},120);render()}
+
+  /* consent "자세히 보기" toggles */
+  var tpl=document.getElementById('policyTpl');
+  document.querySelectorAll('.consent-field').forEach(function(f){
+    var b=f.querySelector('.more'),box=null;
+    b.addEventListener('click',function(e){
+      e.preventDefault();
+      if(box){box.remove();box=null;b.setAttribute('aria-expanded','false');b.textContent='자세히 보기';return}
+      box=tpl.content.firstElementChild.cloneNode(true);f.appendChild(box);b.setAttribute('aria-expanded','true');b.textContent='접기';
+    });
+  });
+
+  function post(body){
+    return fetch('/api/survey',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})
+      .then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error(j.error||'저장하지 못했어요');return j})});
+  }
+  function emailOk(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)}
+  function doneCard(title,text){
+    var d=document.createElement('div');d.className='done';d.setAttribute('tabindex','-1');
+    d.innerHTML='<img src="/assets/otter_smile.png" alt=""><div><b></b><span></span></div>';
+    d.querySelector('b').textContent=title;d.querySelector('span').textContent=text;return d;
   }
 
-  // survey
-  var Q=window.SURVEY, box=document.getElementById('questions');
+  /* signup forms (hero + launch) */
+  document.querySelectorAll('form.signup').forEach(function(form){
+    form.addEventListener('submit',function(e){
+      e.preventDefault();
+      var msg=form.querySelector('.form-msg');msg.textContent='';
+      var email=form.email.value.trim(),consent=form.consent.checked;
+      var ef=form.email.closest('.field'),cf=form.querySelector('.consent-field');
+      ef.classList.toggle('invalid',!emailOk(email));cf.classList.toggle('invalid',!consent);
+      if(!emailOk(email)){form.email.focus();return}
+      if(!consent){form.consent.focus();return}
+      var os=[].slice.call(form.querySelectorAll('input[name=os]:checked')).map(function(i){return i.value});
+      var btn=form.querySelector('button[type=submit]'),label=btn.textContent;
+      btn.disabled=true;btn.textContent='신청하는 중…';
+      post({kind:'signup',email:email,os:os,beta:!!(form.beta&&form.beta.checked),consent:true,ref:ref,from:form.dataset.form,website:form.website.value})
+        .then(function(){
+          var card=doneCard('신청됐어요','출시하는 날 '+email+'로 알려드릴게요.');
+          form.replaceWith(card);card.focus({preventScroll:true});
+          try{localStorage.setItem('sudal_signed','1')}catch(_){}
+        })
+        .catch(function(err){msg.textContent=err.message||'신청하지 못했어요. 잠시 후 다시 시도해 주세요.';btn.disabled=false;btn.textContent=label});
+    });
+    form.addEventListener('input',function(e){var f=e.target.closest('.field');if(f)f.classList.remove('invalid')});
+  });
+
+  /* collapsible feedback */
+  var Q=window.SURVEY,box=document.getElementById('questions');
   function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
-  Q.forEach(function(q,qi){
-    var fs=document.createElement('fieldset');fs.dataset.q=q.id;
-    var html='<legend>'+esc(q.title)+(q.required?' <span class="req">필수</span>':'')+'</legend>';
-    if(q.hint)html+='<p class="hint">'+esc(q.hint)+'</p>';
-    if(q.type==='single'||q.type==='multi'){
-      html+='<div class="opts">';
-      q.options.forEach(function(o,i){
-        html+='<label class="opt"><input type="'+(q.type==='single'?'radio':'checkbox')+'" name="'+q.id+'" value="'+esc(o)+'"><span>'+esc(o)+'</span></label>';
-      });
-      html+='</div>';
-    }else if(q.type==='scale'){
-      html+='<div class="scale">';
-      for(var i=1;i<=5;i++)html+='<label class="opt"><input type="radio" name="'+q.id+'" value="'+i+'" aria-label="'+i+'점"><span>'+i+'</span></label>';
-      html+='</div><div class="scale-labels"><span>1 '+esc(q.min)+'</span><span>5 '+esc(q.max)+'</span></div>';
+  Q.forEach(function(q){
+    var d=document.createElement('div');d.className='q';d.dataset.q=q.id;
+    var h='<div class="qt" id="qt-'+q.id+'">'+esc(q.title)+(q.hint?'<small>'+esc(q.hint)+'</small>':'')+'</div>';
+    if(q.type==='scale'){
+      h+='<div class="scale" role="radiogroup" aria-labelledby="qt-'+q.id+'">';
+      for(var i=1;i<=5;i++)h+='<label class="opt"><input type="radio" name="'+q.id+'" value="'+i+'" aria-label="'+i+'점"><span>'+i+'</span></label>';
+      h+='</div><div class="scale-labels"><span>'+esc(q.min)+'</span><span>'+esc(q.max)+'</span></div>';
+    }else if(q.type==='text'){
+      h+='<textarea name="'+q.id+'" maxlength="1000" aria-labelledby="qt-'+q.id+'" placeholder="'+esc(q.placeholder||'')+'"></textarea>';
     }else{
-      html+='<textarea name="'+q.id+'" maxlength="1000" placeholder="'+esc(q.placeholder||'')+'"></textarea>';
+      h+='<div class="opts" role="group" aria-labelledby="qt-'+q.id+'">';
+      q.options.forEach(function(o){h+='<label class="opt"><input type="'+(q.type==='single'?'radio':'checkbox')+'" name="'+q.id+'" value="'+esc(o)+'"><span>'+esc(o)+'</span></label>'});
+      h+='</div>';
     }
-    html+='<div class="err">'+(q.type==='multi'?'하나 이상 골라 주세요.':'답을 골라 주세요.')+'</div>';
-    fs.innerHTML=html;box.appendChild(fs);
+    d.innerHTML=h;box.appendChild(d);
   });
-
-  var form=document.getElementById('form');
-  function valueOf(q){
-    if(q.type==='multi')return [].slice.call(form.querySelectorAll('input[name="'+q.id+'"]:checked')).map(function(i){return i.value});
-    if(q.type==='text'){return form.querySelector('[name="'+q.id+'"]').value.trim()}
-    var c=form.querySelector('input[name="'+q.id+'"]:checked');return c?(q.type==='scale'?Number(c.value):c.value):null;
-  }
-  function answered(q){var v=valueOf(q);return Array.isArray(v)?v.length>0:!!v}
-  var reqs=Q.filter(function(q){return q.required});
-  var fbar=document.getElementById('fbar'),fpct=document.getElementById('fpct');
-  function updateProgress(){
-    var n=reqs.filter(answered).length, p=Math.round(n/reqs.length*100);
-    fbar.style.width=p+'%';fpct.textContent=p===100?'완성!':p+'%';
-  }
-  form.addEventListener('change',function(e){
-    var fs=e.target.closest('fieldset');
-    if(fs&&fs.dataset.q){
-      var q=Q.filter(function(x){return x.id===fs.dataset.q})[0];
-      if(q.max){
-        var boxes=fs.querySelectorAll('input[type=checkbox]'),n=fs.querySelectorAll('input:checked').length;
-        boxes.forEach(function(b){b.disabled=!b.checked&&n>=q.max});
-      }
-      if(answered(q))fs.classList.remove('invalid');
-    }
-    updateProgress();
+  var fb=document.getElementById('fbForm');
+  fb.addEventListener('change',function(e){
+    var wrap=e.target.closest('.q');if(!wrap)return;
+    var q=Q.filter(function(x){return x.id===wrap.dataset.q})[0];
+    if(q.max){var n=wrap.querySelectorAll('input:checked').length;wrap.querySelectorAll('input[type=checkbox]').forEach(function(b){b.disabled=!b.checked&&n>=q.max})}
   });
-
-  var ref=new URLSearchParams(location.search).get('ref')||'';
-  var msg=document.getElementById('formMsg'),btn=document.getElementById('submitBtn');
-  form.addEventListener('submit',function(e){
-    e.preventDefault();msg.textContent='';
-    var firstBad=null, answers={};
+  fb.addEventListener('submit',function(e){
+    e.preventDefault();
+    var msg=fb.querySelector('.form-msg');msg.textContent='';
+    var answers={},any=false;
     Q.forEach(function(q){
-      var fs=form.querySelector('fieldset[data-q="'+q.id+'"]');
-      answers[q.id]=valueOf(q);
-      var bad=q.required&&!answered(q);
-      fs.classList.toggle('invalid',bad);
-      if(bad&&!firstBad)firstBad=fs;
+      var v;
+      if(q.type==='multi')v=[].slice.call(fb.querySelectorAll('input[name="'+q.id+'"]:checked')).map(function(i){return i.value});
+      else if(q.type==='text')v=fb.querySelector('[name="'+q.id+'"]').value.trim();
+      else{var c=fb.querySelector('input[name="'+q.id+'"]:checked');v=c?(q.type==='scale'?Number(c.value):c.value):null}
+      answers[q.id]=v;if(Array.isArray(v)?v.length:v)any=true;
     });
-    var email=document.getElementById('email').value.trim(),consent=document.getElementById('consent').checked;
-    var efs=document.getElementById('email').closest('fieldset');
-    var emailBad=email&&!consent;
-    efs.classList.toggle('invalid',emailBad);
-    if(emailBad&&!firstBad)firstBad=efs;
-    if(firstBad){
-      msg.textContent='표시된 문항에 답해 주세요.';
-      firstBad.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});
-      var f=firstBad.querySelector('input,textarea');if(f)f.focus({preventScroll:true});
-      return;
-    }
-    btn.disabled=true;btn.textContent='보내는 중…';
-    fetch('/api/survey',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({answers:answers,email:consent?email:'',consent:consent,ref:ref,website:form.website.value})})
-    .then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error(j.error||'저장하지 못했어요');return j})})
-    .then(function(){
-      form.hidden=true;var t=document.getElementById('thanks');t.hidden=false;
-      t.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});t.focus({preventScroll:true});
-      try{localStorage.setItem('sudal_survey_done','1')}catch(_){}
-    })
-    .catch(function(err){
-      msg.textContent=(err&&err.message)||'저장하지 못했어요. 잠시 후 다시 보내 주세요.';
-      btn.disabled=false;btn.textContent='응답 보내기';
-    });
-  });
-
-  document.getElementById('shareBtn').addEventListener('click',function(){
-    var url=location.origin+location.pathname,b=this;
-    var done=function(){b.textContent='복사했어요'};
-    if(navigator.share){navigator.share({title:'수달공방',text:'공부한 만큼 수달이 집을 지어요',url:url}).catch(function(){})}
-    else if(navigator.clipboard){navigator.clipboard.writeText(url).then(done,function(){b.textContent=url})}
-    else{b.textContent=url}
+    if(!any){msg.textContent='하나 이상 답해 주시면 보낼 수 있어요.';return}
+    var btn=fb.querySelector('button[type=submit]');btn.disabled=true;btn.textContent='보내는 중…';
+    post({kind:'feedback',answers:answers,ref:ref,website:fb.website.value})
+      .then(function(){var c=doneCard('의견 고마워요','다음 기능 순서를 정할 때 꼭 참고할게요.');fb.replaceWith(c);c.focus({preventScroll:true})})
+      .catch(function(err){msg.textContent=err.message||'보내지 못했어요. 잠시 후 다시 시도해 주세요.';btn.disabled=false;btn.textContent='의견 보내기'});
   });
 })();
 </script>

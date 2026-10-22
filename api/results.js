@@ -18,12 +18,14 @@ export default async function handler(req, res) {
   }
   try {
     const blobs = [];
-    let cursor;
-    do {
-      const page = await list({ prefix: "responses/", cursor, limit: 1000 });
-      blobs.push(...page.blobs);
-      cursor = page.hasMore ? page.cursor : undefined;
-    } while (cursor);
+    for (const prefix of ["signups/", "responses/"]) {
+      let cursor;
+      do {
+        const page = await list({ prefix, cursor, limit: 1000 });
+        blobs.push(...page.blobs);
+        cursor = page.hasMore ? page.cursor : undefined;
+      } while (cursor);
+    }
 
     const rows = [];
     const batch = 20;
@@ -33,7 +35,9 @@ export default async function handler(req, res) {
           try {
             const r = await get(b.pathname, { access: "private", useCache: false });
             if (!r || !r.stream) return null;
-            return JSON.parse(await readText(r.stream));
+            const row = JSON.parse(await readText(r.stream));
+            if (!row.kind) row.kind = b.pathname.startsWith("signups/") ? "signup" : "feedback";
+            return row;
           } catch {
             return null;
           }
