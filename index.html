@@ -178,6 +178,20 @@ section.block{padding:110px 0}
 .ver h3{font-family:var(--round);font-weight:400;font-size:21px;margin:2px 0 10px;color:var(--wood-dark)}
 .ver ul{margin:0;padding:0 0 0 18px;font-size:15px;color:var(--ink-soft);line-height:1.6}
 .ver li+li{margin-top:4px}
+/* roadmap: future versions as silhouettes */
+.future{position:relative;width:150px;height:118px;display:flex;align-items:flex-end;justify-content:center}
+.sil{display:block;background:#dcc3a1;-webkit-mask:var(--m) center bottom/contain no-repeat;mask:var(--m) center bottom/contain no-repeat}
+.qb{position:absolute;top:0;right:4px;width:32px;height:32px;border-radius:50%;border:2px dashed #c9a37a;background:var(--paper);color:var(--wood);font-family:var(--round);font-size:19px;line-height:28px;text-align:center}
+.vil .sil{position:absolute;bottom:0}
+.vil .a{left:6px;width:52px;height:60px}.vil .b{left:46px;width:62px;height:76px;bottom:8px}.vil .c{right:8px;width:50px;height:58px}
+.polaroid{width:96px;height:104px;background:#fffdf8;border:2px solid #e3cfb2;border-radius:6px;padding:8px 8px 22px;transform:rotate(-6deg);box-shadow:0 4px 0 #ecdcc4}
+.polaroid .sil{width:100%;height:100%;background:#e3cba8}
+.deco .sil{width:84px;height:100px}
+.deco svg{position:absolute}
+.duo .sil{width:62px;height:66px}
+.duo .flip{transform:scaleX(-1)}
+@media (max-width:900px){.future{zoom:.8}}
+@media (max-width:520px){.future{zoom:.62}}
 .road-note{margin-top:26px;font-size:15px;color:var(--ink-soft)}
 
 /* launch section */
@@ -465,7 +479,7 @@ footer .brand img{width:28px;height:28px}
           </div>
         </div>
         <div class="ver">
-          <div class="pic"><img src="/assets/house_3_green.png" alt=""></div>
+          <div class="pic"><div class="future vil" aria-hidden="true"><span class="sil a" style="--m:url(/assets/house_4_green.png)"></span><span class="sil b" style="--m:url(/assets/house_4_red.png)"></span><span class="sil c" style="--m:url(/assets/house_4_green.png)"></span><span class="qb">?</span></div></div>
           <div class="card">
             <div class="v">V2</div>
             <h3>마을 둘러보기</h3>
@@ -473,7 +487,7 @@ footer .brand img{width:28px;height:28px}
           </div>
         </div>
         <div class="ver">
-          <div class="pic"><img src="/assets/house_2.png" alt=""></div>
+          <div class="pic"><div class="future" aria-hidden="true"><div class="polaroid"><span class="sil" style="--m:url(/assets/house_4_red.png)"></span></div><span class="qb">?</span></div></div>
           <div class="card">
             <div class="v">V3</div>
             <h3>기록 남기고 공유</h3>
@@ -481,7 +495,7 @@ footer .brand img{width:28px;height:28px}
           </div>
         </div>
         <div class="ver">
-          <div class="pic"><img src="/assets/house_1.png" alt=""></div>
+          <div class="pic"><div class="future deco" aria-hidden="true"><span class="sil" style="--m:url(/assets/house_4_green.png)"></span><svg style="left:14px;top:26px" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0l2 6 6 2-6 2-2 6-2-6-6-2 6-2z" fill="#e6c48f"/></svg><svg style="right:24px;top:44px;transform:scale(.7)" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0l2 6 6 2-6 2-2 6-2-6-6-2 6-2z" fill="#e6c48f"/></svg><svg style="left:28px;bottom:10px;transform:scale(.6)" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0l2 6 6 2-6 2-2 6-2-6-6-2 6-2z" fill="#e6c48f"/></svg><span class="qb">?</span></div></div>
           <div class="card">
             <div class="v">V4</div>
             <h3>꾸미기와 상점</h3>
@@ -489,7 +503,7 @@ footer .brand img{width:28px;height:28px}
           </div>
         </div>
         <div class="ver">
-          <div class="pic"><img src="/assets/house_0.png" alt=""></div>
+          <div class="pic"><div class="future duo" aria-hidden="true"><span class="sil" style="--m:url(/assets/otter_full.png)"></span><span class="sil flip" style="--m:url(/assets/otter_full.png)"></span><span class="qb">?</span></div></div>
           <div class="card">
             <div class="v">V5</div>
             <h3>함께 공부</h3>
