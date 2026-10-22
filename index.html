@@ -644,7 +644,7 @@ footer .brand img{width:28px;height:28px}
   if(stagesEl&&!reduce&&'IntersectionObserver' in window&&window.requestAnimationFrame){
     var stgs=[].slice.call(stagesEl.querySelectorAll('.stg')),fills=stgs.map(function(el){return el.querySelector('.track i')});
     var tracks=stgs.map(function(el){return el.querySelector('.track')});
-    var raf=0,t0=0,played=false,DUR=4200,RUN='/assets/otter_run.png',SIT='/assets/otter_full.png';
+    var raf=0,t0=0,played=false,DUR=8500,RUN='/assets/otter_run.png',SIT='/assets/otter_full.png';
     new Image().src=SIT;
     stagesEl.classList.add('anim');
     function place(p){
@@ -655,7 +655,7 @@ footer .brand img{width:28px;height:28px}
       fills.forEach(function(f,i){var v=Math.max(0,Math.min(1,(p-i*20)/20));f.style.width=(v*100)+'%'});
       stgs.forEach(function(el,i){el.classList.toggle('on',p>=i*20+(i===0?2:10))});
     }
-    function ease(t){return t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2}
+    function ease(t){return -(Math.cos(Math.PI*t)-1)/2}
     function frame(now){
       if(!t0)t0=now;var t=Math.min(1,(now-t0)/DUR);
       place(ease(t)*100);
