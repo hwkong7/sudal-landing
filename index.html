@@ -216,6 +216,47 @@ section.block{padding:110px 0}
 @media (max-width:900px){.future{zoom:.8}}
 @media (max-width:520px){.future{zoom:.62}}
 .road-note{margin-top:26px;font-size:15px;color:var(--ink-soft)}
+/* roadmap: mobile companion */
+.mobile{margin-top:34px;display:grid;grid-template-columns:1fr 1.15fr;gap:28px;align-items:center;background:var(--paper);border:2px dashed #c9a37a;border-radius:18px;padding:28px clamp(18px,3vw,36px)}
+.mobile .v{display:flex;align-items:center;gap:8px;font-family:var(--round);font-size:15px;color:var(--ink-soft)}
+.mobile .v em{font-style:normal;font-size:12px;font-family:var(--body);font-weight:700;color:#fff;background:#6d8a57;border-radius:6px;padding:2px 7px}
+.mobile h3{font-family:var(--round);font-weight:400;font-size:24px;margin:2px 0 8px;color:var(--wood-dark)}
+.mobile p{margin:0 0 12px;font-size:15.5px;color:var(--ink-soft)}
+.mobile ul{margin:0;padding:0 0 0 18px;font-size:15px;color:var(--ink-soft);line-height:1.6}
+.mobile li+li{margin-top:6px}
+.mobile li b{color:var(--ink)}
+.phones{display:flex;gap:18px;justify-content:center;align-items:flex-start}
+.phone{position:relative;width:176px;height:300px;border-radius:30px;background:#2b2320;padding:7px;box-shadow:0 6px 0 #d9c3a3}
+.phone .scr{position:relative;height:100%;border-radius:24px;overflow:hidden}
+.ios .scr{background:linear-gradient(170deg,#6f8fa8,#a9b9a3 60%,#d8c49c)}
+.island{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:120px;height:30px;border-radius:16px;background:#000;display:flex;align-items:center;justify-content:space-between;padding:0 10px 0 4px;color:#ffd7a8;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums}
+.island img{width:34px;height:auto}
+.clock{position:absolute;top:56px;left:0;right:0;text-align:center;color:#fff;font-size:42px;font-weight:600;letter-spacing:-1px;line-height:1}
+.clock small{display:block;font-size:11px;font-weight:600;letter-spacing:0;opacity:.85;margin-bottom:4px}
+.live{position:absolute;left:8px;right:8px;bottom:22px;background:rgba(30,24,20,.82);border-radius:16px;padding:10px;display:flex;gap:8px;align-items:center;color:#fff}
+.live img{width:46px;height:auto;flex:none}
+.live .t{white-space:nowrap;font-size:10.5px;opacity:.75;line-height:1.3}
+.live .n{white-space:nowrap;font-size:17px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.2;color:#ffd7a8}
+.live .bar{margin-top:5px;height:5px;border-radius:3px;background:rgba(255,255,255,.2);overflow:hidden}
+.live .bar i{display:block;height:100%;width:45%;background:#e9a26b;border-radius:3px}
+.aos .scr{background:#f1ebe3}
+.sbar{display:flex;align-items:center;gap:5px;padding:9px 12px 0;font-size:10.5px;font-weight:700;color:#3a2414}
+.sbar img{height:14px;width:auto}
+.sbar .r{margin-left:auto;letter-spacing:1px;opacity:.6}
+.noti{margin:12px 8px 0;background:#fff;border-radius:14px;padding:10px;box-shadow:0 2px 6px rgba(58,36,20,.12)}
+.noti .h{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--ink-soft)}
+.noti .h img{height:13px;width:auto}
+.noti .b{display:flex;gap:8px;align-items:center;margin-top:6px}
+.noti .b img{width:48px;height:auto;flex:none}
+.noti .tt{font-size:12px;font-weight:700;color:var(--ink);line-height:1.3}
+.noti .ds{white-space:nowrap;font-size:10.5px;color:var(--ink-soft);line-height:1.35}
+.noti .bar{margin-top:8px;height:5px;border-radius:3px;background:#efe2d0;overflow:hidden}
+.noti .bar i{display:block;height:100%;width:45%;background:var(--brick);border-radius:3px}
+.noti.dim{opacity:.45;margin-top:8px}
+.noti.dim .ln{height:7px;border-radius:4px;background:#e6dccf;margin-top:6px}
+.cap{text-align:center;font-size:12.5px;color:var(--ink-soft);margin-top:10px}
+@media (max-width:860px){.mobile{grid-template-columns:1fr}}
+@media (max-width:420px){.phones{gap:10px}.phone{width:158px;height:280px}.island{width:108px}.clock{font-size:36px}.live img{width:38px}.live .n{font-size:15px}.noti .b img{width:40px}}
 
 /* launch section */
 .launch{background:var(--wood);padding:104px 0 110px;position:relative}
@@ -539,6 +580,42 @@ footer .brand img{width:28px;height:28px}
             <div class="v">V5</div>
             <h3>함께 공부</h3>
             <ul><li>친구 수달과 같이 공부</li><li>친구 마을 놀러 가기</li><li>공부 시간을 모아 공동 건물 짓기</li></ul>
+          </div>
+        </div>
+      </div>
+      <div class="mobile">
+        <div>
+          <div class="v">휴대폰 앱 <em>준비 중</em></div>
+          <h3>폰에서도 수달이 같이 공부해요</h3>
+          <p>배달 앱에서 주문하면 화면 위에 '조리 중'이 계속 떠 있는 것처럼, 공부를 시작하면 수달과 타이머가 폰 화면에 떠 있어요.</p>
+          <ul>
+            <li><b>아이폰</b> 다이내믹 아일랜드와 잠금화면에 같이 공부하는 수달과 타이머</li>
+            <li><b>안드로이드</b> 상태바와 알림창에 수달이 떠요</li>
+          </ul>
+        </div>
+        <div class="phones" aria-hidden="true">
+          <div>
+            <div class="phone ios"><div class="scr">
+              <div class="island"><img src="/assets/otter_axe.png" alt=""><span>23:10</span></div>
+              <div class="clock"><small>10월 30일 금요일</small>9:41</div>
+              <div class="live">
+                <img src="/assets/otter_axe.png" alt="">
+                <div style="flex:1;min-width:0"><div class="t">공부 중</div><div class="n">00:23:10</div><div class="bar"><i></i></div><div class="t" style="margin-top:3px">2번째 집 45%</div></div>
+              </div>
+            </div></div>
+            <div class="cap">아이폰</div>
+          </div>
+          <div>
+            <div class="phone aos"><div class="scr">
+              <div class="sbar">9:41 <img src="/assets/otter_face.png" alt=""><span class="r">▾ ▮</span></div>
+              <div class="noti">
+                <div class="h"><img src="/assets/otter_face.png" alt="">수달공방 · 지금</div>
+                <div class="b"><img src="/assets/otter_axe.png" alt=""><div><div class="tt">공부 중 00:23:10</div><div class="ds">2번째 집 45%</div></div></div>
+                <div class="bar"><i></i></div>
+              </div>
+              <div class="noti dim"><div class="ln" style="width:40%"></div><div class="ln"></div></div>
+            </div></div>
+            <div class="cap">안드로이드</div>
           </div>
         </div>
       </div>
