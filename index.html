@@ -349,6 +349,108 @@ footer .brand img{width:28px;height:28px}
   .ver .pic img{max-height:76px}
   .sign{font-size:17px;padding:7px 18px}
 }
+
+/* ================= CLEAN 레이어: 톤 정리 + 모션 ================= */
+:root{--bg:#faf8f4;--surface:#fff;--ink:#231b15;--ink-soft:#6e645b;--hair:#ece6dd;--hair-2:#e2dbd0;--accent:#d0713a;--accent-soft:#f6dcc6;--dark:#231b15}
+body{background:var(--bg);color:var(--ink)}
+.top{background:rgba(250,248,244,.86);backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--hair)}
+.top.scrolled{box-shadow:none;border-bottom-color:var(--hair-2)}
+.brand{color:var(--ink)}
+.btn{border-radius:999px;transition:transform .2s cubic-bezier(.2,.8,.2,1),background .2s,box-shadow .2s}
+.btn-go{background:var(--dark);color:#fff;box-shadow:none}
+.btn-go:hover{transform:translateY(-1px);box-shadow:0 8px 18px -10px rgba(35,27,21,.6)}
+.btn-go:active{transform:translateY(0);box-shadow:none}
+.btn-plain{background:var(--surface);border:1px solid var(--hair-2);box-shadow:none}
+.btn-plain:active{transform:none;box-shadow:none}
+.tag{background:var(--surface);color:var(--ink-soft);border:1px solid var(--hair);border-radius:999px;font-weight:500}
+.hero{padding-top:72px}
+.hero h1{color:var(--ink)}
+.hero h1 .l2{color:var(--ink)}
+.hero h1 .l3{color:var(--ink)}
+input[type=email],textarea{border:1px solid var(--hair-2);border-radius:12px}
+.inline .btn{border-radius:12px}
+.promise li::before{border-radius:50%;background:var(--accent);width:6px;height:6px}
+
+/* 형광펜 스윕 */
+.hl{background:linear-gradient(transparent 58%,var(--accent-soft) 58%) no-repeat 0 0/0% 100%;transition:background-size 1s cubic-bezier(.6,0,.2,1) .35s;padding:0 .08em}
+.in .hl,.hl.in{background-size:100% 100%}
+
+/* 히어로 장면 + 보드 */
+.scene{border-radius:24px 24px 0 0;margin-top:64px}
+.board{background:var(--surface);border:1px solid var(--hair);border-top:0;border-radius:0 0 24px 24px;box-shadow:0 30px 60px -40px rgba(35,27,21,.35);padding:16px}
+.card-paper{background:var(--bg);border:0;border-radius:16px}
+.build-head{font-size:16px;color:var(--ink)}
+.bar{height:8px;border:0;border-radius:99px;background:var(--hair)}
+.bar i{background:var(--accent);border-radius:99px}
+.chip{background:transparent;font-size:13px;color:var(--ink-soft)}
+.chip.on{background:var(--dark);color:#fff;border-radius:99px}
+.timer{background:var(--dark);border-radius:16px}
+.timer b{color:#fff;font-weight:600}
+.timer small{color:#bfb5aa}
+
+/* 섹션 공통 */
+section.block{padding:140px 0}
+.paper-bg{background:var(--surface)}
+.h2{color:var(--ink);letter-spacing:-.01em}
+.lead{color:var(--ink-soft)}
+.facts li::before{border-radius:50%;width:6px;height:6px;margin-top:11px;background:var(--accent)}
+
+/* 창 테두리 */
+.mac{border:1px solid var(--hair-2);border-radius:16px;background:var(--surface);box-shadow:0 40px 80px -48px rgba(35,27,21,.45)}
+.mac-bar{background:#f5f2ed;border-bottom:1px solid var(--hair)}
+.mac-bar span{color:#9a9088}
+
+/* 수달 상태: 차례로 켜지는 카드 */
+.flow{gap:16px}
+.flow::before{display:none}
+.state{background:var(--bg);border:1px solid var(--hair);border-radius:20px;padding:22px 18px 24px;transition:opacity .5s,transform .5s cubic-bezier(.2,.8,.2,1),background .5s,box-shadow .5s,border-color .5s}
+.state .pic{height:130px}
+.state .pic img{background:transparent;transition:transform .5s cubic-bezier(.3,1.6,.5,1)}
+.state .when{background:var(--surface);color:var(--ink-soft);border:1px solid var(--hair);border-radius:999px;font-weight:500}
+.flow.cycle .state{opacity:.42}
+.flow.cycle .state.on{opacity:1;background:var(--surface);border-color:var(--hair-2);transform:translateY(-6px);box-shadow:0 24px 40px -28px rgba(35,27,21,.45)}
+.flow.cycle .state.on .pic img{transform:scale(1.08)}
+.flow.cycle .state.on .when{background:var(--dark);color:#fff;border-color:var(--dark)}
+
+/* 집 단계 */
+.stg .track{background:var(--hair);height:4px}
+.stg .track i{background:var(--accent)}
+.stages.anim .stg span{color:#cfc6bb}
+
+/* 개인정보 */
+.privacy{background:var(--surface);border:1px solid var(--hair);border-radius:28px}
+.privacy li svg *{stroke:var(--accent)}
+
+/* 로드맵 */
+.road::before{height:2px;top:124px;background:var(--hair-2)}
+.ver .card{background:var(--surface);border:1px solid var(--hair);border-radius:20px}
+.ver.now .card{border-color:var(--dark);box-shadow:none}
+.ver .v em{background:var(--dark);border-radius:999px}
+.ver h3,.mobile h3{color:var(--ink)}
+.mobile{background:var(--bg);border:1px solid var(--hair);border-radius:24px}
+.mobile .v em{border-radius:999px}
+.sil{background:#e4ddd2}
+@media (max-width:900px){.road::before{width:2px;background:var(--hair-2)}}
+
+/* 출시 신청 */
+.launch{background:var(--bg);padding:140px 0}
+.launch::before{display:none}
+.launch-box{border:1px solid var(--hair-2);border-radius:28px;box-shadow:0 40px 80px -50px rgba(35,27,21,.45);background:var(--surface)}
+.sign{background:var(--dark);border:0;border-radius:999px;font-size:16px;padding:7px 20px;top:-18px}
+.opt span{border:1px solid var(--hair-2);border-radius:999px}
+.opt input:checked + span{background:var(--dark);border-color:var(--dark)}
+.fb{border-top:1px solid var(--hair)}
+.fb summary{color:var(--ink)}
+.fb summary .arrow{background:var(--bg);border-radius:50%}
+footer{background:var(--bg);color:var(--ink-soft);border-top:1px solid var(--hair)}
+footer .brand{color:var(--ink)}
+
+/* 스크롤 등장 */
+.rv{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.2,.8,.2,1),transform .8s cubic-bezier(.2,.8,.2,1);transition-delay:calc(var(--i,0)*90ms)}
+.rv.in{opacity:1;transform:none}
+.flow.cycle .state.rv.in{transition-delay:0s}
+@media (max-width:860px){section.block{padding:96px 0}.launch{padding:96px 0}}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}.hl{transition:none;background-size:100% 100%}.state,.state .pic img{transition:none}}
 </style>
 </head>
 <body>
@@ -365,7 +467,7 @@ footer .brand img{width:28px;height:28px}
     <div class="wrap hero-grid">
       <div>
         <span class="tag">Windows · macOS 데스크톱 공부 타이머 · 출시 준비 중</span>
-        <h1>공부 시간은 집으로,<br><span class="l2">완성한 집은</span><br><span class="l3">나만의 마을로.</span></h1>
+        <h1>공부 시간은 집으로,<br><span class="l2">완성한 집은</span><br><span class="l3"><span class="hl">나만의 마을로.</span></span></h1>
       </div>
       <div class="hero-copy">
         <p>공부를 시작하면 바탕화면 한쪽에서 수달이 같이 일해요. 내가 공부한 시간만큼 수달이 집을 짓고, 집이 모이면 마을이 돼요.</p>
@@ -426,7 +528,7 @@ footer .brand img{width:28px;height:28px}
   <section class="block" id="together">
     <div class="wrap split">
       <div>
-        <h2 class="h2">말 걸지 않고,<br>옆에만 있어 줘요</h2>
+        <h2 class="h2">말 걸지 않고,<br><span class="hl">옆에만 있어 줘요</span></h2>
         <p class="lead">친구랑 같이 공부하면 집중이 잘 되는 건 대화 때문이 아니라 누군가 옆에서 같이 하고 있어서예요. 수달공방은 그 자리를 수달이 채워요.</p>
         <ul class="facts">
           <li>공부 시작을 누르면 수달이 바탕화면 한쪽에 나와 나무를 나르고 망치질을 해요.</li>
@@ -443,7 +545,7 @@ footer .brand img{width:28px;height:28px}
 
   <section class="block paper-bg">
     <div class="wrap">
-      <h2 class="h2">타이머를 안 눌러도<br>수달이 알아서 알아채요</h2>
+      <h2 class="h2">타이머를 안 눌러도<br><span class="hl">수달이 알아서 알아채요</span></h2>
       <p class="lead">키보드와 마우스를 쓰는지로 공부 중인지 판단해요. 자리를 비우면 감시하는 대신 수달이 꾸벅꾸벅 졸다가 잠들어요.</p>
       <div class="flow">
         <div class="state">
@@ -476,7 +578,7 @@ footer .brand img{width:28px;height:28px}
 
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">30분 공부하면 집 한 채</h2>
+      <h2 class="h2">30분 공부하면 <span class="hl">집 한 채</span></h2>
       <p class="lead">목표를 정할 필요가 없어요. 공부한 만큼 집이 한 단계씩 올라가고, 남은 시간은 다음 집으로 넘어가요.</p>
       <div class="stages" id="stages">
         <img class="stage-runner" id="stageRunner" src="/assets/otter_run.png" alt="">
@@ -492,7 +594,7 @@ footer .brand img{width:28px;height:28px}
 
   <section class="block paper-bg">
     <div class="wrap">
-      <h2 class="h2">앱을 꺼도 마을은 남아요</h2>
+      <h2 class="h2">앱을 꺼도 <span class="hl">마을은 남아요</span></h2>
       <p class="lead">완성한 집은 마을에 하나씩 모이고, 여섯 채가 차면 다음 마을이 열려요. 다 지은 마을은 지난 마을에 그대로 남고, 다시 켜면 짓던 집부터 이어서 지어요. 날마다 얼마나 공부했는지는 달력에 남아요.</p>
       <div class="shots">
         <figure class="shot wide">
@@ -516,7 +618,7 @@ footer .brand img{width:28px;height:28px}
       <div class="privacy">
         <img src="/assets/otter_peek.png" alt="">
         <div>
-          <h2 class="h2" style="margin-bottom:4px">수달은 공부 내용을 보지 않아요</h2>
+          <h2 class="h2" style="margin-bottom:4px">수달은 공부 내용을 <span class="hl">보지 않아요</span></h2>
           <ul>
             <li>
               <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><rect x="1" y="5" width="20" height="13" rx="3" fill="none" stroke="#6d8a57" stroke-width="2"/><path d="M5 9h2M9 9h2M13 9h2M7 13h8" stroke="#6d8a57" stroke-width="2" stroke-linecap="round"/></svg>
@@ -854,6 +956,30 @@ footer .brand img{width:28px;height:28px}
       .then(function(){var c=doneCard('의견 고마워요','다음 기능 순서를 정할 때 꼭 참고할게요.');fb.replaceWith(c);c.focus({preventScroll:true})})
       .catch(function(err){msg.textContent=err.message||'보내지 못했어요. 잠시 후 다시 시도해 주세요.';btn.disabled=false;btn.textContent='의견 보내기'});
   });
+})();
+</script>
+<script>
+/* 스크롤 등장 + 상태 카드 순환 */
+(function(){
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var groups=['.hero .tag','.hero h1','.hero-copy','.scene','.board','.h2','.lead','.facts li','.state','.stg','.note','.shot','.privacy','.ver','.road-note','.mobile','.launch-box'];
+  var els=[];
+  groups.forEach(function(sel){document.querySelectorAll(sel).forEach(function(el){
+    if(el.closest('.rv'))return;
+    var sib=[].slice.call(el.parentNode.children).filter(function(c){return c.matches(sel)});
+    el.style.setProperty('--i',Math.min(sib.indexOf(el),6));el.classList.add('rv');els.push(el)})});
+  if(reduce||!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('in')});document.querySelectorAll('.hl').forEach(function(e){e.classList.add('in')});}
+  else{
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{rootMargin:'0px 0px -10% 0px',threshold:.15});
+    els.forEach(function(e){io.observe(e)});
+  }
+  var flow=document.querySelector('.flow');if(!flow||reduce)return;
+  var cards=[].slice.call(flow.querySelectorAll('.state')),k=0,timer=null;
+  function tick(){cards.forEach(function(c,i){c.classList.toggle('on',i===k)});k=(k+1)%cards.length}
+  new IntersectionObserver(function(es){var v=es[0].isIntersecting;
+    if(v&&!timer){flow.classList.add('cycle');tick();timer=setInterval(tick,2200)}
+    if(!v&&timer){clearInterval(timer);timer=null}},{threshold:.4}).observe(flow);
+  cards.forEach(function(c,i){c.addEventListener('mouseenter',function(){if(!timer)return;clearInterval(timer);k=i;tick();timer=setInterval(tick,2200)})});
 })();
 </script>
 </body>
