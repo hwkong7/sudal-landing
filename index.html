@@ -349,6 +349,57 @@ footer .brand img{width:28px;height:28px}
   .ver .pic img{max-height:76px}
   .sign{font-size:17px;padding:7px 18px}
 }
+
+/* ===== 스크립트 데모 (작업 → 졸림 → 휴식 → 깜짝) ===== */
+.demo{margin-top:40px}
+.demo .mac-body{background:linear-gradient(160deg,#dcebef 0%,#f3e6d1 100%);aspect-ratio:16/9;overflow:hidden}
+.d-win{position:absolute;left:5%;top:8%;width:54%;height:70%;background:#fffdf8;border-radius:10px;box-shadow:0 14px 30px -14px rgba(75,43,23,.45);border:1px solid #e8d6bb;overflow:hidden}
+.d-win-bar{height:26px;display:flex;align-items:center;gap:6px;padding:0 10px;background:#f6ecdc;border-bottom:1px solid #ead9c0;font-size:11px;color:#8a6d55}
+.d-win-bar i{width:8px;height:8px;border-radius:50%;background:#e2cdb0}
+.d-win-bar span{margin-left:6px}
+.d-lines{padding:14px 16px;font:500 clamp(9px,1.25vw,14px)/1.75 ui-monospace,SFMono-Regular,Menlo,monospace;color:#5a4636}
+.d-lines div{white-space:pre;min-height:1.75em}
+.d-lines .k{color:var(--brick)}
+.d-caret{display:inline-block;width:.55em;height:1.1em;vertical-align:-.2em;background:var(--brick);animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+.d-hud{position:absolute;right:4%;top:8%;width:30%;background:rgba(255,248,236,.95);border:1px solid #e5cfb1;border-radius:12px;padding:10px 12px;box-shadow:0 10px 24px -14px rgba(75,43,23,.5);font-size:clamp(9px,1.05vw,13px)}
+.d-hud .row{display:flex;justify-content:space-between;align-items:center;color:var(--ink-soft)}
+.d-hud b{font:400 clamp(14px,2vw,24px)/1.2 var(--round);color:var(--wood-dark);font-variant-numeric:tabular-nums}
+.d-hud .tag{font-weight:700;font-size:.9em;border-radius:6px;padding:1px 7px;background:#e8f1e1;color:var(--leaf);transition:background .3s,color .3s}
+.d-hud .tag.drowsy{background:#fbecd2;color:#a8681f}
+.d-hud .tag.rest{background:#e3eef4;color:var(--river-deep)}
+.d-bar{height:7px;border-radius:99px;background:#efdcc0;margin:8px 0 6px;overflow:hidden}
+.d-bar i{display:block;height:100%;width:0;background:var(--brick);border-radius:inherit;transition:width .25s linear}
+.d-house{position:absolute;right:23%;bottom:9%;width:13%}
+.d-house img{position:absolute;left:0;bottom:0;width:100%;opacity:0;transition:opacity .25s}
+.d-house img.on{opacity:1;animation:pop .45s ease-out}
+.d-otter{position:absolute;right:6%;bottom:8%;width:15%;display:flex;justify-content:center}
+.d-otter img{width:100%;height:auto;transform-origin:50% 100%}
+.d-otter.work img{animation:hammer .7s steps(2) infinite}
+.d-otter.drowsy img{animation:nod 2.2s ease-in-out infinite}
+.d-otter.surprise img{animation:jump .5s ease-out}
+@keyframes nod{50%{transform:rotate(6deg) translateY(3%)}}
+@keyframes jump{30%{transform:translateY(-18%) scale(1.05)}}
+.d-z{position:absolute;right:9%;bottom:30%;font:400 clamp(14px,2vw,24px) var(--round);color:var(--river-deep);opacity:0;transition:opacity .3s}
+.d-z.on{opacity:1;animation:zz 1.8s ease-in-out infinite}
+@keyframes zz{50%{transform:translate(6px,-8px)}}
+.d-bubble{position:absolute;right:8%;bottom:31%;background:#fff;border-radius:10px;padding:4px 10px;font:400 clamp(11px,1.4vw,16px) var(--round);color:var(--wood-dark);box-shadow:0 6px 14px -8px rgba(75,43,23,.5);opacity:0;transform:translateY(6px);transition:.25s}
+.d-bubble.on{opacity:1;transform:none}
+.d-cursor{position:absolute;left:0;top:0;width:clamp(14px,1.8vw,20px);transition:transform .9s cubic-bezier(.4,0,.2,1);pointer-events:none;z-index:5;filter:drop-shadow(0 2px 2px rgba(0,0,0,.25))}
+.d-done{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.d-done span{font:400 clamp(16px,2.6vw,30px) var(--round);color:#fff;background:var(--brick);padding:8px 22px;border-radius:99px;box-shadow:0 5px 0 #9a4b20;opacity:0;transform:scale(.8);transition:.35s}
+.d-done.on span{opacity:1;transform:none}
+.d-ctrl{display:flex;align-items:center;gap:14px;padding:12px 16px;background:#fff8ec;border-top:1px solid #e5cfb1}
+.d-step{font-size:15px;color:var(--ink);flex:1;min-height:1.6em}
+.d-step em{font-style:normal;font-weight:700;color:var(--brick);margin-right:8px;font-variant-numeric:tabular-nums}
+.d-segs{display:flex;gap:5px}
+.d-segs i{width:22px;height:4px;border-radius:99px;background:#e5cfb1;overflow:hidden;position:relative}
+.d-segs i b{position:absolute;inset:0;width:0;background:var(--wood-dark)}
+.d-segs i.past b{width:100%}
+.d-pause{width:30px;height:30px;border-radius:50%;border:1px solid #e5cfb1;background:#fff;color:var(--wood-dark);display:grid;place-items:center;cursor:pointer}
+.d-pause .ic-play{display:none}.d-pause.paused .ic-play{display:block}.d-pause.paused .ic-pause{display:none}
+@media (max-width:640px){.d-segs{display:none}.d-step{font-size:13px}.d-win{width:60%}.d-hud{width:34%}}
+@media (prefers-reduced-motion:reduce){.d-otter img,.d-z.on,.d-caret,.d-house img.on{animation:none}.d-cursor{transition:none}}
 </style>
 </head>
 <body>
@@ -441,34 +492,37 @@ footer .brand img{width:28px;height:28px}
     </div>
   </section>
 
-  <section class="block paper-bg">
+  <section class="block paper-bg" id="states">
     <div class="wrap">
       <h2 class="h2">타이머를 안 눌러도<br>수달이 알아서 알아채요</h2>
       <p class="lead">키보드와 마우스를 쓰는지로 공부 중인지 판단해요. 자리를 비우면 감시하는 대신 수달이 꾸벅꾸벅 졸다가 잠들어요.</p>
-      <div class="flow">
-        <div class="state">
-          <div class="pic"><img src="/assets/otter_axe.png" alt="망치질하는 수달"></div>
-          <h3>작업</h3>
-          <span class="when">공부 중</span>
-          <p>나무를 나르고 망치질하며 집을 지어요. 공부 시간이 쌓여요.</p>
+      <div class="demo mac" id="demo" role="img" aria-label="코딩하는 동안 수달이 집을 짓고, 손을 멈추면 졸다가 잠들고, 마우스를 움직이면 깜짝 놀라 다시 집을 짓는 예시 화면">
+        <div class="mac-bar"><i class="r"></i><i class="y"></i><i class="g"></i><span>바탕화면 · 예시 화면</span></div>
+        <div class="mac-body" aria-hidden="true">
+          <div class="d-win">
+            <div class="d-win-bar"><i></i><i></i><i></i><span>알고리즘 과제.py</span></div>
+            <div class="d-lines" id="dLines"></div>
+          </div>
+          <div class="d-hud">
+            <div class="row"><span>오늘 공부</span><span class="tag" id="dTag">작업 중</span></div>
+            <b id="dClock">00:00:00</b>
+            <div class="d-bar"><i id="dBar"></i></div>
+            <div class="row"><span id="dStage">터 다지기</span><span id="dPct">0%</span></div>
+          </div>
+          <div class="d-house" id="dHouse">
+            <img src="/assets/house_0.png" alt=""><img src="/assets/house_1.png" alt=""><img src="/assets/house_2.png" alt=""><img src="/assets/house_3_red.png" alt=""><img src="/assets/house_4_red.png" alt="">
+            <img src="/assets/house_4_red.png" alt="" style="position:static;visibility:hidden">
+          </div>
+          <div class="d-otter work" id="dOtter"><img id="dOtterImg" src="/assets/otter_axe.png" alt=""></div>
+          <div class="d-z" id="dZ"></div>
+          <div class="d-bubble" id="dBubble">헉!</div>
+          <div class="d-done" id="dDone"><span>집 한 채 완성!</span></div>
+          <svg class="d-cursor" id="dCursor" viewBox="0 0 20 24"><path d="M2 1v19l5-5 3.5 7.5 3-1.4L10 13.8h7z" fill="#fff" stroke="#222" stroke-width="1.4" stroke-linejoin="round"/></svg>
         </div>
-        <div class="state">
-          <div class="pic"><img src="/assets/otter_drowsy.png" alt="하품하는 수달"></div>
-          <h3>졸림</h3>
-          <span class="when">입력 없이 5분</span>
-          <p>하품하며 꾸벅꾸벅 졸아요. 공부 시간은 계속 인정돼요.</p>
-        </div>
-        <div class="state">
-          <div class="pic"><img src="/assets/otter_sleep.png" alt="웅크려 자는 수달"></div>
-          <h3>휴식</h3>
-          <span class="when">10분 또는 휴식 버튼</span>
-          <p>웅크려 잠들고 집 짓기도 멈춰요. 휴식 시간은 따로 기록돼요.</p>
-        </div>
-        <div class="state">
-          <div class="pic"><img src="/assets/otter_surprise.png" alt="깜짝 놀란 수달"></div>
-          <h3>깜짝</h3>
-          <span class="when">다시 입력하면</span>
-          <p>화들짝 깨어나서 하던 일을 다시 시작해요.</p>
+        <div class="d-ctrl">
+          <p class="d-step" id="dStep" aria-live="polite"></p>
+          <div class="d-segs" id="dSegs"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></div>
+          <button class="d-pause" id="dPause" type="button" aria-label="데모 멈추기"><svg class="ic-pause" width="12" height="12" viewBox="0 0 14 14" aria-hidden="true"><rect x="2" y="1" width="3.6" height="12" rx="1" fill="currentColor"/><rect x="8.4" y="1" width="3.6" height="12" rx="1" fill="currentColor"/></svg><svg class="ic-play" width="12" height="12" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1.5v11l9.5-5.5z" fill="currentColor"/></svg></button>
         </div>
       </div>
     </div>
@@ -854,6 +908,64 @@ footer .brand img{width:28px;height:28px}
       .then(function(){var c=doneCard('의견 고마워요','다음 기능 순서를 정할 때 꼭 참고할게요.');fb.replaceWith(c);c.focus({preventScroll:true})})
       .catch(function(err){msg.textContent=err.message||'보내지 못했어요. 잠시 후 다시 시도해 주세요.';btn.disabled=false;btn.textContent='의견 보내기'});
   });
+})();
+</script>
+<script>
+/* 스크립트 데모: 단계별 대본을 순서대로 재생한다 */
+(()=>{
+  const root=document.getElementById('demo'); if(!root) return;
+  const $=id=>document.getElementById(id);
+  const lines=$('dLines'),clock=$('dClock'),bar=$('dBar'),pctEl=$('dPct'),stageEl=$('dStage'),tag=$('dTag');
+  const otter=$('dOtter'),oImg=$('dOtterImg'),z=$('dZ'),bubble=$('dBubble'),done=$('dDone'),cursor=$('dCursor');
+  const houses=[...$('dHouse').querySelectorAll('img')].slice(0,5),segs=[...$('dSegs').children],stepEl=$('dStep'),pauseBtn=$('dPause');
+  const marks=[0,20,45,70,100],names=['터 다지기','뼈대','벽','지붕','완성'];
+  const code=['def solve(n):','    dp = [0] * (n + 1)','    dp[1] = 1','    for i in range(2, n + 1):','        dp[i] = dp[i-1] + dp[i-2]','    return dp[n]'];
+  const steps=[
+    '키보드를 치기 시작하면 수달도 망치질을 시작해요',
+    '공부한 만큼 집이 한 단계씩 올라가요',
+    '5분 동안 손을 멈추면 꾸벅꾸벅 졸아요. 시간은 계속 인정돼요',
+    '10분이 지나면 잠들고 집 짓기도 멈춰요',
+    '마우스를 움직이면 화들짝 깨서 다시 지어요'];
+  let secs=0,pct=0,paused=false,visible=false,run=0;
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const two=n=>String(n).padStart(2,'0');
+  function render(){
+    const t=Math.round(secs);clock.textContent=`${two(t/3600|0)}:${two((t/60|0)%60)}:${two(t%60)}`;
+    bar.style.width=pct+'%';pctEl.textContent=Math.floor(pct)+'%';
+    let st=0;marks.forEach((m,i)=>{if(pct>=m)st=i});stageEl.textContent=names[st];
+    houses.forEach((h,i)=>h.classList.toggle('on',i===st));
+  }
+  function mood(m){
+    otter.className='d-otter '+m;
+    oImg.src={work:'/assets/otter_axe.png',drowsy:'/assets/otter_drowsy.png',rest:'/assets/otter_sleep.png',surprise:'/assets/otter_surprise.png',log:'/assets/otter_log.png'}[m];
+    tag.className='tag '+(m==='drowsy'?'drowsy':m==='rest'?'rest':'');
+    tag.textContent=m==='drowsy'?'졸림':m==='rest'?'휴식':'작업 중';
+    z.classList.toggle('on',m==='rest');
+  }
+  function moveCursor(x,y){const r=root.querySelector('.mac-body').getBoundingClientRect();cursor.style.transform=`translate(${x*r.width}px,${y*r.height}px)`}
+  // 멈춤/화면 밖이면 기다렸다가 진행하는 sleep
+  const wait=ms=>new Promise((res,rej)=>{const id=run;let left=ms,last=performance.now();
+    (function tick(now){if(id!==run)return rej('stop');const dt=now-last;last=now;if(!paused&&visible)left-=dt;left<=0?res():requestAnimationFrame(tick)})(last)});
+  async function grow(toPct,ms,countTime=true){const from=pct,n=Math.max(1,ms/60|0);for(let i=1;i<=n;i++){await wait(60);pct=from+(toPct-from)*i/n;if(countTime)secs+=18*(toPct-from)/n;render()}}
+  async function typeLine(i){const el=document.createElement('div');lines.appendChild(el);for(const ch of code[i]){await wait(28);el.innerHTML=code[i].slice(0,el.textContent.length+1).replace(/\b(def|for|in|return)\b/g,'<span class="k">$1</span>')+'<span class="d-caret"></span>';}el.querySelector('.d-caret')?.remove()}
+  function setStep(i){stepEl.innerHTML=`<em>${i+1} / 5</em>${steps[i]}`;segs.forEach((s,j)=>{s.classList.toggle("past",j<i);s.firstChild.style.width=j===i?'0%':''})}
+  async function seg(i,ms){const b=segs[i].firstChild;const n=ms/100|0;for(let k=1;k<=n;k++){await wait(100);b.style.width=k/n*100+'%'}}
+  function reset(){secs=0;pct=0;lines.innerHTML='';done.classList.remove('on');bubble.classList.remove('on');mood('work');moveCursor(.3,.55);render()}
+  async function play(){
+    for(;;){reset();
+      setStep(0);await Promise.all([seg(0,3600),(async()=>{for(let i=0;i<3;i++)await typeLine(i)})(),grow(18,3400)]);
+      setStep(1);await Promise.all([seg(1,4200),(async()=>{for(let i=3;i<6;i++)await typeLine(i)})(),(async()=>{await grow(45,1800);mood('log');await grow(70,1800);mood('work')})()]);
+      setStep(2);moveCursor(.9,.95);await wait(500);mood('drowsy');await Promise.all([seg(2,3200),grow(76,3000)]);
+      setStep(3);mood('rest');await seg(3,3200);
+      setStep(4);moveCursor(.45,.45);await wait(700);mood('surprise');bubble.classList.add('on');await wait(700);bubble.classList.remove('on');mood('work');
+      await Promise.all([seg(4,3600),grow(100,2600)]);done.classList.add('on');await wait(1800);
+    }
+  }
+  pauseBtn.addEventListener('click',()=>{paused=!paused;pauseBtn.classList.toggle('paused',paused);pauseBtn.setAttribute('aria-label',paused?'데모 재생':'데모 멈추기');root.classList.toggle('is-paused',paused)});
+  if(reduce){secs=1530;pct=45;code.slice(0,4).forEach(c=>{const d=document.createElement('div');d.textContent=c;lines.appendChild(d)});mood('work');render();stepEl.innerHTML='<em>예시</em>공부하는 동안 수달이 집을 지어요';cursor.style.display='none';pauseBtn.hidden=true;return}
+  new IntersectionObserver(([e])=>{visible=e.isIntersecting},{threshold:.25}).observe(root);
+  addEventListener('resize',()=>{});
+  play().catch(()=>{});
 })();
 </script>
 </body>
